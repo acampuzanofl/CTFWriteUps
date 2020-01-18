@@ -1,0 +1,4 @@
+baseURL = "https://pootytangfl.github.io/CTFWriteUps/"
+languageCode = "en-us"
+title = "CTFWriteUps"
+theme = "CactusPlus"
