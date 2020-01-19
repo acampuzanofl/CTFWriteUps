@@ -8,10 +8,10 @@
 		<meta name="author" content="Andres Campuzano">
 		<meta name="description" content="Documenting CTFs attempted">
 		<meta name="generator" content="Hugo 0.62.2" />
-		<title>Creating a New Theme &middot; CTF Write-Ups</title>
+		<title>Creating a New Theme &middot; Write-Ups</title>
 		<link rel="shortcut icon" href="https://pootytangfl.github.io/CTFWriteUps/images/favicon.ico">
 		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/style.css">
-		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/highlight.css">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/atom-one-dark.css">
 
 		
 		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/font-awesome.min.css">
@@ -60,58 +60,62 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#introduction">Introduction</a></li>
-        <li><a href="#skins">Skins</a></li>
-        <li><a href="#the-home-page">The Home Page</a></li>
-        <li><a href="#site-configuration-file">Site Configuration File</a></li>
-        <li><a href="#content">Content</a></li>
-        <li><a href="#template-files">Template Files</a></li>
-      </ul>
-    </li>
-    <li><a href="#create-a-new-site">Create a New Site</a>
-      <ul>
-        <li><a href="#generate-the-html-for-the-new-site">Generate the HTML For the New Site</a></li>
-        <li><a href="#test-the-new-site">Test the New Site</a></li>
-      </ul>
-    </li>
-    <li><a href="#create-a-new-theme">Create a New Theme</a>
-      <ul>
-        <li><a href="#create-a-skeleton">Create a Skeleton</a></li>
-        <li><a href="#update-the-configuration-file-to-use-the-theme">Update the Configuration File to Use the Theme</a></li>
-        <li><a href="#generate-the-site">Generate the Site</a></li>
-      </ul>
-    </li>
-    <li><a href="#the-theme-development-cycle">The Theme Development Cycle</a>
-      <ul>
-        <li><a href="#purge-the-public-directory">Purge the public/ Directory</a></li>
-        <li><a href="#hugos-watch-option">Hugo's Watch Option</a></li>
-        <li><a href="#live-reload">Live Reload</a></li>
-        <li><a href="#development-commands">Development Commands</a></li>
-      </ul>
-    </li>
-    <li><a href="#update-the-home-page-template">Update the Home Page Template</a>
-      <ul>
-        <li><a href="#make-a-static-home-page">Make a Static Home Page</a></li>
-        <li><a href="#build-a-dynamic-home-page">Build a &ldquo;Dynamic&rdquo; Home Page</a></li>
-        <li><a href="#list-and-single-templates">List and Single Templates</a></li>
-        <li><a href="#add-content-to-the-homepage">Add Content to the Homepage</a></li>
-        <li><a href="#add-content-to-the-posts">Add Content to the Posts</a></li>
-        <li><a href="#linking-to-content">Linking to Content</a></li>
-        <li><a href="#create-a-post-listing">Create a Post Listing</a></li>
-      </ul>
-    </li>
-    <li><a href="#creating-top-level-pages">Creating Top Level Pages</a></li>
-    <li><a href="#sharing-templates">Sharing Templates</a>
-      <ul>
-        <li><a href="#create-the-header-and-footer-partials">Create the Header and Footer Partials</a></li>
-        <li><a href="#update-the-home-page-template-to-use-the-partials">Update the Home Page Template to Use the Partials</a></li>
-        <li><a href="#update-the-default-single-template-to-use-the-partials">Update the Default Single Template to Use the Partials</a></li>
-      </ul>
-    </li>
-    <li><a href="#add-date-published-to-posts">Add “Date Published” to Posts</a>
-      <ul>
-        <li><a href="#add-date-published-to-the-template">Add “Date Published” to the Template</a></li>
-        <li><a href="#dont-repeat-yourself">Don't Repeat Yourself</a></li>
+        <li>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#skins">Skins</a></li>
+            <li><a href="#the-home-page">The Home Page</a></li>
+            <li><a href="#site-configuration-file">Site Configuration File</a></li>
+            <li><a href="#content">Content</a></li>
+            <li><a href="#template-files">Template Files</a></li>
+          </ul>
+        </li>
+        <li><a href="#create-a-new-site">Create a New Site</a>
+          <ul>
+            <li><a href="#generate-the-html-for-the-new-site">Generate the HTML For the New Site</a></li>
+            <li><a href="#test-the-new-site">Test the New Site</a></li>
+          </ul>
+        </li>
+        <li><a href="#create-a-new-theme">Create a New Theme</a>
+          <ul>
+            <li><a href="#create-a-skeleton">Create a Skeleton</a></li>
+            <li><a href="#update-the-configuration-file-to-use-the-theme">Update the Configuration File to Use the Theme</a></li>
+            <li><a href="#generate-the-site">Generate the Site</a></li>
+          </ul>
+        </li>
+        <li><a href="#the-theme-development-cycle">The Theme Development Cycle</a>
+          <ul>
+            <li><a href="#purge-the-public-directory">Purge the public/ Directory</a></li>
+            <li><a href="#hugos-watch-option">Hugo's Watch Option</a></li>
+            <li><a href="#live-reload">Live Reload</a></li>
+            <li><a href="#development-commands">Development Commands</a></li>
+          </ul>
+        </li>
+        <li><a href="#update-the-home-page-template">Update the Home Page Template</a>
+          <ul>
+            <li><a href="#make-a-static-home-page">Make a Static Home Page</a></li>
+            <li><a href="#build-a-dynamic-home-page">Build a &ldquo;Dynamic&rdquo; Home Page</a></li>
+            <li><a href="#list-and-single-templates">List and Single Templates</a></li>
+            <li><a href="#add-content-to-the-homepage">Add Content to the Homepage</a></li>
+            <li><a href="#add-content-to-the-posts">Add Content to the Posts</a></li>
+            <li><a href="#linking-to-content">Linking to Content</a></li>
+            <li><a href="#create-a-post-listing">Create a Post Listing</a></li>
+          </ul>
+        </li>
+        <li><a href="#creating-top-level-pages">Creating Top Level Pages</a></li>
+        <li><a href="#sharing-templates">Sharing Templates</a>
+          <ul>
+            <li><a href="#create-the-header-and-footer-partials">Create the Header and Footer Partials</a></li>
+            <li><a href="#update-the-home-page-template-to-use-the-partials">Update the Home Page Template to Use the Partials</a></li>
+            <li><a href="#update-the-default-single-template-to-use-the-partials">Update the Default Single Template to Use the Partials</a></li>
+          </ul>
+        </li>
+        <li><a href="#add-date-published-to-posts">Add “Date Published” to Posts</a>
+          <ul>
+            <li><a href="#add-date-published-to-the-template">Add “Date Published” to the Template</a></li>
+            <li><a href="#dont-repeat-yourself">Don't Repeat Yourself</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -422,13 +426,13 @@ in 1 ms
 <p>We could update one of the default templates, but a good design decision is to update the most specific template available. That's not a hard and fast rule (in fact, we'll break it a few times in this tutorial), but it is a good generalization.</p>
 <h3 id="make-a-static-home-page">Make a Static Home Page</h3>
 <p>Right now, that page is empty because we don't have any content and we don't have any logic in the template. Let's change that by adding some text to the template.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$ vi themes/zafta/layouts/index.html
-<span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
-&lt;<span style="color:#f92672">html</span>&gt;
-&lt;<span style="color:#f92672">body</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;hugo says hello!&lt;/<span style="color:#f92672">p</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
-&lt;/<span style="color:#f92672">html</span>&gt;
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$ vi themes/zafta/layouts/index.html
+<span style="color:#776e71">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#5bc4bf">html</span>&gt;
+&lt;<span style="color:#5bc4bf">body</span>&gt;
+  &lt;<span style="color:#5bc4bf">p</span>&gt;hugo says hello!&lt;/<span style="color:#5bc4bf">p</span>&gt;
+&lt;/<span style="color:#5bc4bf">body</span>&gt;
+&lt;/<span style="color:#5bc4bf">html</span>&gt;
 :wq
 
 $
@@ -965,7 +969,7 @@ $ vi themes/zafta/layouts/_default/single.html
 
         <script src="https://pootytangfl.github.io/CTFWriteUps/js/jquery-3.3.1.min.js"></script>
 <script src="https://pootytangfl.github.io/CTFWriteUps/js/main.js"></script>
-<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.min.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

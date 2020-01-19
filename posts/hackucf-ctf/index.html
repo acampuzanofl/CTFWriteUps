@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="Andres Campuzano">
+		<meta name="description" content="Documenting CTFs attempted">
+		<meta name="generator" content="Hugo 0.62.2" />
+		<title>Hack@UCF &middot; Write-Ups</title>
+		<link rel="shortcut icon" href="https://pootytangfl.github.io/CTFWriteUps/images/favicon.ico">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/style.css">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/atom-one-dark.css">
+
+		
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://pootytangfl.github.io/CTFWriteUps/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://pootytangfl.github.io/CTFWriteUps/posts'>Archive</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/tags'>Tags</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Hack@UCF
+                    </h1>
+                    <h2 class="headline">
+                    Jan 18, 2020 00:00
+                    · 374 words
+                    · 2 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#reverse-engineering">Reverse Engineering</a>
+      <ul>
+        <li><a href="#babys-first-elf">Baby's First ELF</a>
+          <ul>
+            <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#not-found">Not Found?</a>
+          <ul>
+            <li><a href="#solution-1">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#conditional-1">Conditional 1</a>
+          <ul>
+            <li><a href="#solution-2">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#conditional-2">Conditional 2</a>
+          <ul>
+            <li><a href="#solution-3">Solution</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <h1 id="reverse-engineering">Reverse Engineering</h1>
+<h2 id="babys-first-elf">Baby's First ELF</h2>
+<p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/Baby'sFirstELF.png#post" alt=""></a>
+<a href="/CTFWriteUps/Hack@UCF/files/babys_first_elf">babys_first_elf</a></p>
+<h3 id="solution">Solution</h3>
+<p>We are given a file <code>babys_first_elf</code>. First thing we should do is see what type of file it is, the name of the challenge suggests
+the it is an ELF. ELF is a common file format for executables in Linux. So lets boot up our terminal on Ubuntu and run <code>file babys_first_elf</code>.
+Sure enough it's and ELF, so we can just run it and it pops out our flag.
+<img src="/CTFWriteUps/Hack@UCF/images/RunELF.png#post" alt="">
+flag = <code>flag{not_that_kind_of_elf}</code></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="not-found">Not Found?</h2>
+<p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/NotFound.png#post" alt=""></a><br>
+<a href="/CTFWriteUps/Hack@UCF/files/not_found">not_found</a></p>
+<h3 id="solution-1">Solution</h3>
+<p>Similar challenge as the first, we load it up into our terminal and run <code>file</code> on it.
+It is indeed another ELF, lets go ahead and run it <code>./not_found</code>. And we get our flag haha.
+<img src="/CTFWriteUps/Hack@UCF/images/RunNotFound.png" alt="">
+flag = <code>flag{got_dat_multilib}</code></p>
+<h2 id="conditional-1">Conditional 1</h2>
+<p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/Conditional1.png#post" alt=""></a>
+<a href="/CTFWriteUps/Hack@UCF/files/conditional1">conditional1</a></p>
+<h3 id="solution-2">Solution</h3>
+<p>Looks like this one is giving us a hint. Lets go ahead and try that out first.
+Lets run <code>strings</code> on our file using the Linux terminal <code>strings conditional1</code>.
+Careful sifting of the list we see that there's no flag, but do see some interesting strings.
+<img src="/CTFWriteUps/Hack@UCF/images/RunStrings.png" alt="">
+The 2 strings that immediately pop out are <code>Usage: %s password</code> and <code>super_secret_password</code>.
+The first one suggests how to use the program and the second one appears to be some kind of super
+secret password. Lets try it out! We run the program with the correct argument <code>./conditional1 super_secret_password</code>
+<img src="/CTFWriteUps/Hack@UCF/images/AccessGranted.png" alt="">
+flag = <code>flag{if_i_submit_this_flag_then_i_will_get_points}</code></p>
+<h2 id="conditional-2">Conditional 2</h2>
+<p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/conditional2.png#post" alt=""></a>
+<a href="/CTFWriteUps/Hack@UCF/files/conditional2">conditional2</a></p>
+<h3 id="solution-3">Solution</h3>
+<p>Another hint, this time telling us to use IDA. Lets go ahead and load up our file into IDA.
+We can use the function window to navigate to <code>main</code>, but looks like we're already here.
+<a href="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png"><img src="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png" alt=""></a>
+A shallow look at the graphs and I quickly notice the string <code>&quot;Access Granted.&quot;</code>, if we inspect that section
+of the code we can see a call to <code>giveFlag</code>.
+<img src="/CTFWriteUps/Hack@UCF/images/giveFlag.png#post" alt=""><br>
+We follow the code back a little bit and find</p>
+<pre><code>	call    _atoi
+	add     esp, 10h
+	cmp     eax, 0CAFEF00Dh
+	jz      short loc_8048502
+</code></pre><p>A quick google search tells us that <a href="http://www.cplusplus.com/reference/cstdlib/atoi/"><code>atoi</code></a> accepts a string
+and then parses the integers. The resulting int is stored into eax then compared to 0xCAFE00D, and jumps to our
+<code>giveFlag</code> function. Using IDA we can modify the jz instruction and make it always jump.</p>
+<pre><code>jmp short loc_8048502 
+</code></pre><p>We run the newly cracked executable and claim the flag
+<img src="/CTFWriteUps/Hack@UCF/images/NoRules.png" alt=""><br>
+flag = <code>flag{at_least_this_cafe_wont_leak_your_credit_card_numbers}</code></p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fpootytangfl.github.io%2fCTFWriteUps%2fposts%2fhackucf-ctf%2f - Hack%40UCF "><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/pootytangfl">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/acampuzanofl/">
+        <i class="fa fa-linkedin-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> Andres Campuzano
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://pootytangfl.github.io/CTFWriteUps/js/jquery-3.3.1.min.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/main.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

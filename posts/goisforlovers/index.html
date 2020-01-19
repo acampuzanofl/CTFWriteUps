@@ -8,10 +8,10 @@
 		<meta name="author" content="Andres Campuzano">
 		<meta name="description" content="Documenting CTFs attempted">
 		<meta name="generator" content="Hugo 0.62.2" />
-		<title>(Hu)go Template Primer &middot; CTF Write-Ups</title>
+		<title>(Hu)go Template Primer &middot; Write-Ups</title>
 		<link rel="shortcut icon" href="https://pootytangfl.github.io/CTFWriteUps/images/favicon.ico">
 		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/style.css">
-		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/highlight.css">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/atom-one-dark.css">
 
 		
 		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/font-awesome.min.css">
@@ -72,24 +72,29 @@
                     <div id="toc">
                       <nav id="TableOfContents">
   <ul>
-    <li><a href="#introduction-to-go-templates">Introduction to Go Templates</a></li>
-    <li><a href="#basic-syntax">Basic Syntax</a></li>
-    <li><a href="#variables">Variables</a></li>
-    <li><a href="#functions">Functions</a></li>
-    <li><a href="#includes">Includes</a></li>
-    <li><a href="#logic">Logic</a>
+    <li>
       <ul>
-        <li><a href="#iteration">Iteration</a></li>
-        <li><a href="#conditionals">Conditionals</a></li>
+        <li><a href="#introduction-to-go-templates">Introduction to Go Templates</a></li>
+        <li><a href="#basic-syntax">Basic Syntax</a></li>
+        <li><a href="#variables">Variables</a></li>
+        <li><a href="#functions">Functions</a></li>
+        <li><a href="#includes">Includes</a></li>
+        <li><a href="#logic">Logic</a>
+          <ul>
+            <li><a href="#iteration">Iteration</a></li>
+            <li><a href="#conditionals">Conditionals</a></li>
+          </ul>
+        </li>
+        <li><a href="#pipes">Pipes</a></li>
+        <li><a href="#context-aka-the-dot">Context (aka. the dot)</a></li>
       </ul>
     </li>
-    <li><a href="#pipes">Pipes</a></li>
-    <li><a href="#context-aka-the-dot">Context (aka. the dot)</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#using-content-page-parameters">Using Content (page) Parameters</a></li>
-    <li><a href="#using-site-config-parameters">Using Site (config) Parameters</a></li>
+    <li><a href="#hugo-parameters">Hugo Parameters</a>
+      <ul>
+        <li><a href="#using-content-page-parameters">Using Content (page) Parameters</a></li>
+        <li><a href="#using-site-config-parameters">Using Site (config) Parameters</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
                     </div>
@@ -302,10 +307,10 @@ notoc: true
 <p>In your top-level configuration file (eg, <code>config.yaml</code>) you can define site
 parameters, which are values which will be available to you in chrome.</p>
 <p>For instance, you might declare:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">params:
-  CopyrightHTML: <span style="color:#e6db74">&#34;Copyright &amp;#xA9; 2013 John Doe. All Rights Reserved.&#34;</span>
-  TwitterUser: <span style="color:#e6db74">&#34;spf13&#34;</span>
-  SidebarRecentLimit: <span style="color:#ae81ff">5</span>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">params:
+  CopyrightHTML: <span style="color:#48b685">&#34;Copyright &amp;#xA9; 2013 John Doe. All Rights Reserved.&#34;</span>
+  TwitterUser: <span style="color:#48b685">&#34;spf13&#34;</span>
+  SidebarRecentLimit: <span style="color:#f99b15">5</span>
 </code></pre></div><p>Within a footer layout, you might then declare a <code>&lt;footer&gt;</code> which is only
 provided if the <code>CopyrightHTML</code> parameter is provided, and if it is given,
 you would declare it to be HTML-safe, so that the HTML entity is not escaped
@@ -384,7 +389,7 @@ so, such as in this example:</p>
 
         <script src="https://pootytangfl.github.io/CTFWriteUps/js/jquery-3.3.1.min.js"></script>
 <script src="https://pootytangfl.github.io/CTFWriteUps/js/main.js"></script>
-<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.min.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

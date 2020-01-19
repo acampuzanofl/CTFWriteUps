@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on CTF Write-Ups</title>
+    <title>Posts on Write-Ups</title>
     <link>https://pootytangfl.github.io/CTFWriteUps/posts/</link>
-    <description>Recent content in Posts on CTF Write-Ups</description>
+    <description>Recent content in Posts on Write-Ups</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Sep 2014 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://pootytangfl.github.io/CTFWriteUps/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -22,13 +22,13 @@
     </item>
     
     <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/migrate-from-jekyll/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
+      <title>Hack@UCF</title>
+      <link>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</link>
+      <pubDate>Sat, 18 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/migrate-from-jekyll/</guid>
-      <description>&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;
-&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output.&lt;/p&gt;</description>
+      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</guid>
+      <description>Reverse Engineering Baby&#39;s First ELF  babys_first_elf
+Solution We are given a file babys_first_elf. First thing we should do is see what type of file it is, the name of the challenge suggests the it is an ELF. ELF is a common file format for executables in Linux. So lets boot up our terminal on Ubuntu and run file babys_first_elf. Sure enough it&#39;s and ELF, so we can just run it and it pops out our flag.</description>
     </item>
     
     <item>
