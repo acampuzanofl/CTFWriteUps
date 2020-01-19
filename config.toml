@@ -1,6 +1,6 @@
 baseURL = "https://pootytangfl.github.io/CTFWriteUps/"
 languageCode = "en-us"
-title = "CTF Write-Ups"
+title = "Write-Ups"
 theme = "CactusPlus"
 
 [params]
@@ -50,3 +50,59 @@ theme = "CactusPlus"
 [social]
         linkedin-square = "https://www.linkedin.com/in/acampuzanofl/"
 	github-square = "https://github.com/pootytangfl"
+
+[markup]
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 1
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "paraiso-dark"
+    tabWidth = 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
