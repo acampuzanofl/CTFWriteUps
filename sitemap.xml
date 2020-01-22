@@ -3,11 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/creating-a-new-theme/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</loc>
     <lastmod>2020-01-18T00:00:00+00:00</lastmod>
   </url>
@@ -28,63 +23,11 @@
   </url>
   
   <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/goisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/categories/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/categories/development/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/development/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/hugoisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/go/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/golang/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/categories/golang/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/hugo/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/tags/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/templates/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/themes/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
 </urlset>

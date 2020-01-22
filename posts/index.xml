@@ -12,45 +12,12 @@
     
     
     <item>
-      <title>Creating a New Theme</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/creating-a-new-theme/</guid>
-      <description>&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;This tutorial will show you how to create a simple theme in Hugo.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>Hack@UCF</title>
       <link>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</link>
       <pubDate>Sat, 18 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</guid>
-      <description>Reverse Engineering Baby&#39;s First ELF  babys_first_elf
-Solution We are given a file babys_first_elf. First thing we should do is see what type of file it is, the name of the challenge suggests the it is an ELF. ELF is a common file format for executables in Linux. So lets boot up our terminal on Ubuntu and run file babys_first_elf. Sure enough it&#39;s and ELF, so we can just run it and it pops out our flag.</description>
-    </item>
-    
-    <item>
-      <title>(Hu)go Template Primer</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/goisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/goisforlovers/</guid>
-      <description>&lt;p&gt;Hugo uses the excellent &lt;a href=&#34;http://golang.org/&#34;&gt;go&lt;/a&gt; &lt;a href=&#34;http://golang.org/pkg/html/template/&#34;&gt;html/template&lt;/a&gt; library for
-its template engine. It is an extremely lightweight engine that provides a very
-small amount of logic.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Getting Started with Hugo</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/hugoisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/hugoisforlovers/</guid>
-      <description>&lt;h2 id=&#34;step-1-install-hugo&#34;&gt;Step 1. Install Hugo&lt;/h2&gt;
-&lt;p&gt;Goto &lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;hugo releases&lt;/a&gt; and download the
-appropriate version for your os and architecture.&lt;/p&gt;</description>
+      <description>&lt;a href=&#34;https://ctf.hackucf.org/&#34;&gt;https://ctf.hackucf.org/&lt;/a&gt;</description>
     </item>
     
   </channel>

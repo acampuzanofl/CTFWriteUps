@@ -29,7 +29,9 @@ code {
     border-radius: 4px;
     overflow: scroll;
     font-family: 'Menlo', 'Monaco', Courier, monospace;
-    white-space: nowrap
+    white-space: nowrap;
+    color: #98c379;
+	background: #0a1d28;
 }
 
 pre code {
@@ -53,7 +55,7 @@ pre code {
   overflow-x: auto;
   padding: 0.5em;
   color: #abb2bf;
-  background: #282c34;
+  background: #0a1d28;
 }
 
 .hljs-comment,
