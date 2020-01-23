@@ -46,9 +46,15 @@
                     </h1>
                     <h2 class="headline">
                     Jan 18, 2020 00:00
-                    · 2166 words
+                    · 2186 words
                     · 11 minute read
                       <span class="tags">
+                      
+                      
+                          
+                              <a href="https://pootytangfl.github.io/CTFWriteUps/tags/re">RE</a>
+                          
+                      
                       
                       </span>
                     </h2>
@@ -158,33 +164,33 @@ flag = <code>flag{got_dat_multilib}</code></p>
 <h3 id="reconnaissance-2">Reconnaissance</h3>
 <p>This one gives a hint. Following the hint, I run <code>strings</code> on the file <code>strings conditional1</code>.
 After sifting through the list, there's no flag, but a few interesting strings show up.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/RunStrings.png" alt=""></p>
-<p>The 2 strings that immediately pop out are <code>Usage: %s password</code> and <code>super_secret_password</code>.
+<p><img src="/CTFWriteUps/Hack@UCF/images/RunStrings.png" alt="">
+The 2 strings that immediately pop out are <code>Usage: %s password</code> and <code>super_secret_password</code>.
 The first one suggests how to use the program and the second one appears to be some kind of super
 secret password. Running the program with the correct argument <code>./conditional1 super_secret_password</code>
-and the flag comes out</p>
+gives the flag.</p>
 <p><img src="/CTFWriteUps/Hack@UCF/images/AccessGranted.png" alt=""></p>
 <h3 id="solution-2">Solution</h3>
-<p>Use <code>strings</code> to find the password <code>super_secret_password</code>
+<p>Use <code>strings</code> to find the password <code>super_secret_password</code><br>
 flag = <code>flag{if_i_submit_this_flag_then_i_will_get_points}</code></p>
 <h2 id="conditional-2">Conditional 2</h2>
 <p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/conditional2.png#post" alt=""></a>
 <a href="/CTFWriteUps/Hack@UCF/files/conditional2">conditional2</a></p>
 <h3 id="reconnaissance-3">Reconnaissance</h3>
 <p>Another hint, this time suggesting the use of IDA. Once loaded into IDA I use the function window, on the left side,
-to quickly navigate to important sections,<code>main</code> being a standard starting point.</p>
-<p><a href="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png"><img src="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png" alt=""></a></p>
-<p>At a glance, in one of the graphs I notice the string <code>&quot;Access Granted.&quot;</code>, inspecting that section
-I see a call to <code>giveFlag</code>.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/giveFlag.png#post" alt=""></p>
-<p>Following the code back a bit and to see how this function gets called and i find</p>
+to quickly navigate to important sections, <code>main</code> being a standard starting point.</p>
+<p><a href="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png"><img src="/CTFWriteUps/Hack@UCF/images/IDAConditional2.png" alt=""></a>
+At a glance, in one of the graphs, I notice the string <code>&quot;Access Granted.&quot;</code>. Focusing on that section of the code
+i notice a call to <code>giveFlag</code></p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/giveFlag.png#post" alt=""><br>
+Following the code back a bit and to see how this function gets called and i find</p>
 <pre><code>	call    _atoi
 	add     esp, 10h
 	cmp     eax, 0CAFEF00Dh
 	jz      short loc_8048502
 </code></pre><p>A quick google search shows <a href="http://www.cplusplus.com/reference/cstdlib/atoi/">atoi</a> accepts a string,
-then parses it into an int. The resulting value is stored into eax then compared to <code>0xCAFEF00D</code>,jumping to
-<code>giveFlag</code> if the values are equal. Using IDA I modify the jz instruction and make it always jump.</p>
+then parses it into an int. The resulting value is stored into eax then compared to <code>0xCAFEF00D</code>, if the values are equal
+the jump is taken, leading to <code>giveFlag</code>. Using IDA I modified the jz instruction to make it always jump.</p>
 <pre><code>jmp short loc_8048502 
 </code></pre><p>Run the newly cracked executable and claim the flag</p>
 <p><img src="/CTFWriteUps/Hack@UCF/images/NoRules.png" alt=""></p>
@@ -195,16 +201,16 @@ flag = <code>flag{at_least_this_cafe_wont_leak_your_credit_card_numbers}</code><
 <p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/loop1.png#post" alt=""></a><br>
 <a href="/CTFWriteUps/Hack@UCF/files/loop1">loop1</a></p>
 <h3 id="reconnaissance-4">Reconnaissance</h3>
-<p>Run <code>file</code> and <code>strings</code> to start out. The file is an elf and nothing interesting to note in strings.
-Running the program shows a simple menu that receives a number to select an option. With obvious to note,
-I boot up the file into IDA.</p>
-<p><a href="/CTFWriteUps/Hack@UCF/images/idaloop1.png"><img src="/CTFWriteUps/Hack@UCF/images/idaloop1.png" alt=""></a></p>
-<p>I can see from the graph overview that this program is significantly more complicated. Taking note of the referenced strings,
-function names and the basic flow. The program uses <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a>
-to parse the user input and compares it to a value to direct the flow. In the function window, the <code>giveFlag</code> function is there.
+<p>I run <code>file</code> and <code>strings</code> on the file. It's an elf, with no interesting strings.
+Running the program shows a simple menu that receives a number to select an option. With a basic overview
+of the program, I load the file into IDA for further analysis.</p>
+<p><a href="/CTFWriteUps/Hack@UCF/images/idaloop1.png"><img src="/CTFWriteUps/Hack@UCF/images/idaloop1.png" alt=""></a>
+I can see from the graph overview that this program is significantly more complicated.I take notes of the referenced strings,
+the function names and the basic flow of the program. I notice that <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a> is called
+to parse the user input. This input is then used to compare to some value which redirects the program's flow. In the function window, the <code>giveFlag</code> function is there.
 I navigate to the function to find out what references it.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/idagiveflag.png" alt=""></p>
-<p>I can see a jnz that controls the flow into this branch.</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/idagiveflag.png" alt="">
+I can see a jnz that controls the flow into this branch.</p>
 <pre><code>	cmp eax,7A69h
 	jnz short loc_804868
 </code></pre><p>Looks like the value is being compared to <code>0x7a69</code>, which in dec becomes <code>31337</code>. So it's just a matter of giving the correct menu option
@@ -220,7 +226,7 @@ flag = <code>flag{much_reversing_very_ida_wow}</code></p>
 <p>Running <code>file</code> and <code>strings</code> results in something pretty interesting.</p>
 <p><img src="/CTFWriteUps/Hack@UCF/images/stringsmildred.png" alt=""><br>
 <code>ZjByX3kwdXJfNWVjMG5kX2xlNTVvbl91bmJhc2U2NF80bGxfN2gzXzdoMW5nNQ==</code><br>
-The == at the end of the string is a good sign that this is base64 encoded. Using a friendly neighbor base64 decoder,
+The <code>==</code> at the end of the string is a good sign that this is base64 encoded. Using a friendly neighbor base64 decoder,
 the string is converted to <code>f0r_y0ur_5ec0nd_le55on_unbase64_4ll_7h3_7h1ng5</code>. And the password is the flag.</p>
 <h3 id="solution-5">Solution</h3>
 <p>Running <code>strings</code> shows a base64 encoded string. Decoding the string reveals the flag. <br>
@@ -230,20 +236,20 @@ flag = <code>flag{f0r_y0ur_5ec0nd_le55on_unbase64_4ll_7h3_7h1ng5}</code></p>
 <a href="/CTFWriteUps/Hack@UCF/files/64bit">64bit</a></p>
 <h3 id="reconnaissance-6">Reconnaissance</h3>
 <p><code>file</code> and <code>strings</code> give nothing interesting and when loaded into ida the program is fairly simple.</p>
-<p><a href="/CTFWriteUps/Hack@UCF/images/ida64bit.png"><img src="/CTFWriteUps/Hack@UCF/images/ida64bit.png" alt=""></a></p>
-<p>The program, passes the char &lsquo;d&rsquo;,<code>mov edi, offset aD ;&quot;%d%&quot;</code>, and a location in memory <code>[rbp+var_8]</code>, then calls <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a>.
+<p><a href="/CTFWriteUps/Hack@UCF/images/ida64bit.png"><img src="/CTFWriteUps/Hack@UCF/images/ida64bit.png" alt=""></a>
+The program passes the char &lsquo;d&rsquo;, <code>mov edi, offset aD ;&quot;%d%&quot;</code>, and a location in memory <code>[rbp+var_8]</code>, then calls <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a>.
 When scanf recieves &lsquo;d&rsquo; as an argument, the function will only parse decimal integers. After scanf, a call to <code>encrypt</code> is made.
 Following <code>encrypt</code>&hellip;</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/64bitencrypt.png" alt=""></p>
-<p>Looks like edi was passed to <code>encrypt</code> as an argument, then the value in edi is copied to eax and then xor'd with <code>0x4d2</code>.
-Before <code>encrypt</code> was called, that value in eax was passed to edi. Eax contained the address pointing to the region in memory that scanf was given.
-So <code>encrypt</code> returns the xor'd int value of what the user submitted. Exiting <code>encrypt</code> takes us too&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/64bitencrypt.png" alt=""><br>
+Looks like <code>edi</code> was passed to <code>encrypt</code> as an argument, then the value in <code>edi</code> is copied to <code>eax</code> and then xor'd with <code>0x4d2</code>.
+Before <code>encrypt</code> was called, that value in <code>eax</code> was passed to <code>edi</code>. <code>eax</code> contained the address pointing to the region in memory that scanf was given.
+So <code>encrypt</code> returns the xor'd int value of what the user submitted. Exiting <code>encrypt</code> takes me too&hellip;</p>
 <pre><code>	mov {rbp+var_4}, eax
 	cmp {rbp+var_4), deadbeefh
 </code></pre><p>the value of eax is stored in memory, then compared to <code>0xdeadbeef</code>. All we have to do is <code>xor 0xdeadbeef</code> with they key <code>0x4d2</code>
 to reverse the encryption, <code>0xdeadbeef</code> xor'd with <code>0x4d2</code> gives us <code>0xdeadba3d</code> then convert it to<code>3735927357</code>,
-since scanf is only checking for decimal integers, and the flag is simply a signed int.
-<img src="/CTFWriteUps/Hack@UCF/images/64bitflag.png" alt=""></p>
+since <code>scanf</code> is only checking for decimal integers, and the flag is simply a signed int.</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/64bitflag.png" alt=""></p>
 <h3 id="solution-6">Solution</h3>
 <p>This is a simple xor encryption algorithm, the key is <code>0x4d2</code> and hash is <code>0xdeadbeef</code>. To reverse an xor encryption just xor the
 hash with the key.<br>
@@ -254,74 +260,73 @@ flag = <code>3735927357</code></p>
 <h3 id="reconnaissance-7">Reconnaissance</h3>
 <p>Looks like the challenge has something to do with reversing the source of a python program. The file is an exe and
 with a bit of googling I found out that python programs can be wrapped into an exe that allows it to run as a stand alone
-application. This is fairly easy to decompile with the correct script. I used <a href="https://github.com/countercept/python-exe-unpacker..">https://github.com/countercept/python-exe-unpacker..</a>.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/sourceprotectiondecompile.png" alt=""></p>
-<p>with the source decompiled, now open the .py file with a text editor and inspect the code.</p>
+application. This is fairly easy to decompile with the correct script. Using <a href="https://github.com/countercept/python-exe-unpacker">python-exe-unpacker</a>&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/sourceprotectiondecompile.png" alt="">
+With the source decompiled, I open the .py file with a text editor and inspect the code.</p>
 <p><img src="/CTFWriteUps/Hack@UCF/images/sourceprotectionflag.png" alt="">
 And there's the flag in the code.</p>
 <h3 id="solution-7">Solution</h3>
-<p>python runnables with exe wrappers have many ways to retrieve the original source. Running a script that has been published for this
+<p>Python runnables with exe wrappers have many ways to retrieve the original source. Running a script that has been published for this
 purpose is the most straight forward way.<br>
 flag = <code>sun{py1n574ll3r_15n7_50urc3_pr073c710n}</code></p>
 <h2 id="order-matters">Order Matters</h2>
 <p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/ordermatters.png#post" alt=""></a><br>
 <a href="/CTFWriteUps/Hack@UCF/files/order">order</a></p>
 <h3 id="reconnaissance-8">Reconnaissance</h3>
-<p>Run <code>files</code> and <code>strings</code>, elf as expected and running the program prints text and ask for a password,
-<code>strings</code> showed something interesting.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersstrings.png" alt=""></p>
-<p>Here is a series of strings that appears to represent hex values. The strings could be important,
-but no ideas came up, so I loaded the file into IDA to continue the analysis.</p>
-<p><a href="/CTFWriteUps/Hack@UCF/images/ordermattersida.png"><img src="/CTFWriteUps/Hack@UCF/images/ordermattersida.png" alt=""></a></p>
-<p>This program is fairly complex with a lot of branches, something to note are the functions <code>p01-p15</code> in the function window.
+<p>Running the program shows an input field requesting the users password.
+Then I ran <code>strings</code> to see if anything interesting came up&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersstrings.png" alt="">
+Here is something that caught my eye, a series of strings that appear to represent hex values. The strings could be important,
+but no ideas came up; I loaded the file into IDA to continue the analysis.</p>
+<p><a href="/CTFWriteUps/Hack@UCF/images/ordermattersida.png"><img src="/CTFWriteUps/Hack@UCF/images/ordermattersida.png" alt=""></a>
+This program is fairly complex with a lot of branches, something to note are the functions <code>p01-p15</code> in the function window.
 From the main function, the program calls <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a> with an argument &lsquo;s&rsquo;,
 telling the function to save the input as a string of characters and storing it at <code>[rbp+s]</code>.
-Then calls <a href="http://www.cplusplus.com/reference/cstring/strlen/">strlen</a> to find the length of the string and compares it to
-<code>0x1e</code>, which is 30 decimal. After passing the length requirement the input is handled to a rather large loop.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersloop.png" alt=""></p>
-<p>A bunch of operations are done on the input and it's not entirely clear what's happening, once the loop has iterated
+Then it calls <a href="http://www.cplusplus.com/reference/cstring/strlen/">strlen</a> to find the length of the string and compares it to
+<code>0x1e</code>, which is 30 decimal. After passing the length requirement the input is passed to a rather large loop.</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersloop.png" alt=""><br>
+A bunch of operations are done on the input and it's not entirely clear what's happening, once the loop has iterated
 15 times, the flow goes to another loop, checking the values created by the previous loop, these values are read by a switch
 to determine which case to take. On closer inspection, each case has one of each p function, total of 16 cases (including one default case).
 Checking out one of the p functions (p01)&hellip;</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersp01.png" alt=""></p>
-<p>The function reads one of the strings found earlier and converts it to an int using <a href="http://www.cplusplus.com/reference/cstdlib/strtol/">strtoi</a>.
-Once it exits, a final math operation is done on the int parsed by stroi. That int is
+<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersp01.png" alt=""><br>
+The function reads one of the strings found earlier and converts it to an int using <a href="http://www.cplusplus.com/reference/cstdlib/strtol/">strtoi</a>.
+Once it exits, a final math operation is done on the int parsed by <code>strtoi</code>. That int is
 then stored and the loops starts over. This loop iterates for 15 times, then exits to&hellip;</p>
 <pre><code>	xor     eax, [rbp+var_C]
 	sub     eax, edx
 	cmp     eax, 6F2E255Ah
 	jnz     short loc_C16
-</code></pre><p>Few operation are done to the final int value and then compares the resultant value to a key. There's quite a lot of processing that the original input
-goes through and reversing the operations may be too complex. A dynamic view of the memory could help reveal more information. So I load the program into radare's debugger, setting a
-breakpoint at <code>cmp	[rbp+var_4], 0Eh</code>, which is right after the first loop completes. Then run it until the breakpoint is hit.
-Inspecting the memory ahows&hellip;</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersradare2.png" alt=""></p>
-<p>So the loop parses pairs of chars and assigns them an int corresponding to the value, the string &ldquo;1112&rdquo; is converted to <code>0b00 0000 0c00</code>,
+</code></pre><p>That int value then gets verified against the key <code>0x6f2e255a</code>. Which determines if the password was correct. There's quite a lot of processing that the original input
+goes through and reversing the operations may be too complex. A dynamic view of the memory could help reveal more information. I load the program into radare, then set a breakpoint
+at <code>cmp [rbp+var_4], 0Eh</code>. After running the program and hitting the breakpoint, I check out the memory region to find&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/ordermattersradare2.png" alt="">
+So the loop parses pairs of chars and assigns them an int corresponding to the value. The string &ldquo;1112&rdquo; is converted to <code>0b00 0000 0c00</code>,
 where 0xb and 0xc are hex for 11 and 12 respectively. The switch then receives a pair, in order from the lowest, and calls the function related to the value (p11). This is done until all the pairs have been processed.
-With each iteration, initial value obtained from the first pair is modified through consecutive math operations. The solution lies in finding
+With each iteration, the initial value obtained from the first pair is modified through consecutive math operations. The solution lies in finding
 the order in which the p functions should be called. Unfortunately that's where i got seriously stumped. A bit of googling
 and i accidentally stumbled across the solution.</p>
 <h3 id="solution-8">Solution</h3>
-<p>Each string is a sequence ascii characters encoded in hex. And each
-sequence of ascii characters is base64 encoded. Use a decoder, like a cyberchef <a href="https://gchq.github.io/CyberChef/#recipe=Fork('%5C%5Cn','%5C%5Cn',false)From_Hex('Space')Decode_text('UTF-8%20(65001)')From_Base64('A-Za-z0-9%2B/%3D',true)&amp;input=NTgzMzUyNDkKNTgzMDZjNDUKNWEzMTRlNjYKNjMzMzU2NzUKNTgzMzUxNzcKNTE1NjM5NjkKNGU0ODRhNDUKNjY1MTNkM2QKNGQzMTM5MzUKNTk1NDQ1NzgKNGQzMTM5NDMKNGQ0ODZjN2EKNjUzMjMxNWEKNTgzMTUyNmYKNTU2YTQ2NzUK">recipe</a>,
-to convert the strings into the correct form <code>_tH_IDgS_sun_t0A_b4rD}3_ya113_B0ys{mY_ThR1n</code>.
+<p>Each string is a sequence of ascii characters encoded in hex and each
+sequence of ascii characters is base64 encoded. Using a decoder, like <a href="https://gchq.github.io/CyberChef/#recipe=Fork('%5C%5Cn','%5C%5Cn',false)From_Hex('Space')Decode_text('UTF-8%20(65001)')From_Base64('A-Za-z0-9%2B/%3D',true)&amp;input=NTgzMzUyNDkKNTgzMDZjNDUKNWEzMTRlNjYKNjMzMzU2NzUKNTgzMzUxNzcKNTE1NjM5NjkKNGU0ODRhNDUKNjY1MTNkM2QKNGQzMTM5MzUKNTk1NDQ1NzgKNGQzMTM5NDMKNGQ0ODZjN2EKNjUzMjMxNWEKNTgzMTUyNmYKNTU2YTQ2NzUK">cyberchef</a>,
+I converted the strings into the correct form <code>_tH_IDgS_sun_t0A_b4rD}3_ya113_B0ys{mY_ThR1n</code>.
 The flag is not in the correct order. With a bit of manual arranging&hellip;<br>
 flag = <code>sun{mY_IDA_bR1ngS_a11_Th3_B0ys_t0_tH3_y4rD}</code></p>
 <h2 id="moody-numbers">Moody Numbers</h2>
 <p><a href="https://ctf.hackucf.org/challenges"><img src="/CTFWriteUps/Hack@UCF/images/moodynumbers.png#post" alt=""></a><br>
 <a href="/CTFWriteUps/Hack@UCF/files/MoodyNumbers.jar">MoodyNumbers.jar</a></p>
 <h3 id="reconnaissance-9">Reconnaissance</h3>
-<p>It's a jar file, running it is pretty straight forward and gives a basic idea of what to look for&hellip;</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersrun.png" alt=""></p>
-<p>So it's a game, and the flag is probably the reward for completing the game. Decompiling jar files
-is pretty easy, <a href="https://ghidra-sre.org/">ghidra's</a> decompiler should be sufficient enough for this challenge.
+<p>It's a jar file, so running it is pretty straightforward and gives a basic idea of what to look for&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersrun.png" alt=""><br>
+It's a game, and the flag is probably the reward for completing the game. Decompiling jar files
+is pretty easy, <a href="https://ghidra-sre.org/">ghidra's</a> decompiler should be sufficient for this challenge.
 When loaded into ghidra&hellip;</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersnumberchecker.png" alt=""></p>
-<p>2 classes are recognized, a <code>MoodyNumbers.class</code> and a <code>NumberChecker.class</code>. NumberChecker sounds exactly
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersnumberchecker.png" alt=""><br>
+Two classes are recognized, a <code>MoodyNumbers.class</code> and a <code>NumberChecker.class</code>. NumberChecker sounds exactly
 like what I'm looking for.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersprogramtree.png" alt=""></p>
-<p>There's a couple of different functions in the class, <code>isHappy</code>, <code>isScary</code>, <code>isNostalgic</code>, <code>isArousing</code>
-all which accept an int value. Inspecting <code>isHappy</code> first, since that is what was asked for when the program
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersprogramtree.png" alt=""><br>
+There are a couple of different functions in the class, <code>isHappy</code>, <code>isScary</code>, <code>isNostalgic</code>, <code>isArousing</code>
+all of which accept an int value. Inspecting <code>isHappy</code> first, since that is what was asked for when the program
 was executed&hellip;</p>
 <div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#fec418">int</span> <span style="color:#06b6ef">isHappy_int_boolean</span><span style="color:#5bc4bf">(</span>undefined4 <span style="color:#815ba4">this</span><span style="color:#5bc4bf">,</span><span style="color:#fec418">int</span> param1<span style="color:#5bc4bf">)</span>
 
@@ -333,8 +338,8 @@ was executed&hellip;</p>
 <span style="color:#5bc4bf">}</span>
 </code></pre></div><p>The function divides the input by <code>0x4217f</code> and returns true if the end result equals <code>0x18ad</code>. It's
 just a matter of reversing the order of operations.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersishappy.png" alt=""></p>
-<p><code>1710131923</code> is the correct number. Now scary is next&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersishappy.png" alt=""><br>
+<code>1710131923</code> is the correct number. Now scary is next&hellip;</p>
 <div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#fec418">int</span> <span style="color:#06b6ef">isScary_int_boolean</span><span style="color:#5bc4bf">(</span>undefined4 <span style="color:#815ba4">this</span><span style="color:#5bc4bf">,</span><span style="color:#fec418">int</span> param1<span style="color:#5bc4bf">)</span>
 
 <span style="color:#5bc4bf">{</span>
@@ -346,10 +351,10 @@ just a matter of reversing the order of operations.</p>
   <span style="color:#5bc4bf">}</span>
   <span style="color:#815ba4">return</span> <span style="color:#5bc4bf">(</span><span style="color:#fec418">int</span><span style="color:#5bc4bf">)</span><span style="color:#5bc4bf">(</span>param1 <span style="color:#5bc4bf">&gt;</span><span style="color:#5bc4bf">&gt;</span> 8 <span style="color:#5bc4bf">=</span><span style="color:#5bc4bf">=</span> 0xb<span style="color:#5bc4bf">)</span><span style="color:#5bc4bf">;</span>
 <span style="color:#5bc4bf">}</span>
-</code></pre></div><p>So a couple of bitwise checks, then shifts the input right by 8 bits and checks if its equal too <code>0xb</code>.
-Just shifting <code>0xb</code> 8 bits left, which is 2816 in decimal, and that should be the answer.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersisscary.png" alt=""></p>
-<p><code>isNostalgic</code> next&hellip;</p>
+</code></pre></div><p>A couple of bitwise checks are performed, then it shifts the input right by 8 bits and checks if it's equal too <code>0xb</code>.
+Just shifting <code>0xb</code> 8 bits left, which is <code>2816</code> in decimal, and that should be the answer.</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersisscary.png" alt="">
+<code>isNostalgic</code> next&hellip;</p>
 <div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#fec418">int</span> <span style="color:#06b6ef">isNostalgic_int_boolean</span><span style="color:#5bc4bf">(</span>undefined4 <span style="color:#815ba4">this</span><span style="color:#5bc4bf">,</span><span style="color:#fec418">int</span> param1<span style="color:#5bc4bf">)</span>
 
 <span style="color:#5bc4bf">{</span>
@@ -371,10 +376,10 @@ Just shifting <code>0xb</code> 8 bits left, which is 2816 in decimal, and that s
   bVar3 <span style="color:#5bc4bf">=</span> objectRef_00<span style="color:#5bc4bf">.</span><span style="color:#06b6ef">equals</span><span style="color:#5bc4bf">(</span><span style="color:#48b685">&#34;08ef85248841b7fbf4b1ef8d1090a0d4&#34;</span><span style="color:#5bc4bf">)</span><span style="color:#5bc4bf">;</span>
   <span style="color:#815ba4">return</span> <span style="color:#5bc4bf">(</span><span style="color:#fec418">int</span><span style="color:#5bc4bf">)</span>bVar3<span style="color:#5bc4bf">;</span>
 <span style="color:#5bc4bf">}</span>
-</code></pre></div><p>Seems to be a MD5 hashing algorithm, where the hash value should equal to <code>08ef85248841b7fbf4b1ef8d1090a0d4</code>.
+</code></pre></div><p>Seems to be a MD5 hashing algorithm, where the hash value should be <code>08ef85248841b7fbf4b1ef8d1090a0d4</code>.
 Using an online MD5 reversing tool gives <code>19800828</code>.</p>
-<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersisnostalgic.png" alt=""></p>
-<p>finally <code>isArousing</code>&hellip;</p>
+<p><img src="/CTFWriteUps/Hack@UCF/images/moodynumbersisnostalgic.png" alt=""><br>
+Finally <code>isArousing</code>&hellip;</p>
 <div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#fec418">int</span> <span style="color:#06b6ef">isArousing_int_boolean</span><span style="color:#5bc4bf">(</span>undefined4 <span style="color:#815ba4">this</span><span style="color:#5bc4bf">,</span><span style="color:#fec418">int</span> param1<span style="color:#5bc4bf">)</span>
 
 <span style="color:#5bc4bf">{</span>
@@ -412,10 +417,10 @@ Using an online MD5 reversing tool gives <code>19800828</code>.</p>
   <span style="color:#5bc4bf">}</span>
   <span style="color:#815ba4">return</span> 0<span style="color:#5bc4bf">;</span>
 <span style="color:#5bc4bf">}</span>
-</code></pre></div><p>This is quite the function, it's looking for a value that can be processed into 2 variables,
-where those 2 values can be xor'd with each other to equal <code>0xf</code>. There's many checks and iterations
-that reversing the order of operations can be strenuous. But the algorithm is straight forward
-that it's susceptible to being brute forced. Creating a c++ program to test a bunch of values</p>
+</code></pre></div><p>This is quite the function. It's looking for a value that can be processed into 2 variables,
+where those 2 values can be xor'd with each other to equal <code>0xf</code>. There are many checks and iterations
+that make reversing the order of operations strenuous. But the algorithm is straightforward enough
+that it's susceptible to being brute forced. Creating a c++ program to test a bunch of values&hellip;</p>
 <pre><code>#include &lt;iostream&gt;
 using namespace std;
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Write-Ups</title>
-    <link>https://pootytangfl.github.io/CTFWriteUps/posts/</link>
-    <description>Recent content in Posts on Write-Ups</description>
+    <title>RE on Write-Ups</title>
+    <link>https://pootytangfl.github.io/CTFWriteUps/tags/re/</link>
+    <description>Recent content in RE on Write-Ups</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 22 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://pootytangfl.github.io/CTFWriteUps/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pootytangfl.github.io/CTFWriteUps/tags/re/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

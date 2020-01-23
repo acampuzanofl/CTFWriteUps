@@ -3,17 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</loc>
-    <lastmod>2020-01-18T00:00:00+00:00</lastmod>
+    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/embeddedsecurityctf/</loc>
+    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/posts/</loc>
-    <lastmod>2020-01-18T00:00:00+00:00</lastmod>
+    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/re/</loc>
+    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/</loc>
+    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/</loc>
+    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</loc>
     <lastmod>2020-01-18T00:00:00+00:00</lastmod>
   </url>
   
@@ -24,10 +39,6 @@
   
   <url>
     <loc>https://pootytangfl.github.io/CTFWriteUps/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>https://pootytangfl.github.io/CTFWriteUps/tags/</loc>
   </url>
   
 </urlset>
