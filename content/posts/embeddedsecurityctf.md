@@ -8,7 +8,6 @@ tags = [
 date = "2020-01-22"
 +++
 
-# Reverse Engineering
 ## New Orleans
 ![](/CTFWriteUps/embeddedsecurity/images/neworleans.png)
 
