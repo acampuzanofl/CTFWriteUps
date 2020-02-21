@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="Andres Campuzano">
+		<meta name="description" content="Documenting CTFs attempted">
+		<meta name="generator" content="Hugo 0.62.2" />
+		<title>Flare On 2019 &middot; Write-Ups</title>
+		<link rel="shortcut icon" href="https://pootytangfl.github.io/CTFWriteUps/images/favicon.ico">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/style.css">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/atom-one-dark.css">
+
+		
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://pootytangfl.github.io/CTFWriteUps/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://pootytangfl.github.io/CTFWriteUps/posts'>Archive</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/tags'>Tags</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Flare On 2019
+                    </h1>
+                    <h2 class="headline">
+                    Feb 20, 2020 00:00
+                    · 673 words
+                    · 4 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://pootytangfl.github.io/CTFWriteUps/tags/re">RE</a>
+                          
+                              <a href="https://pootytangfl.github.io/CTFWriteUps/tags/binary-exploitation">Binary Exploitation</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#memecat-battlestation">Memecat Battlestation</a>
+          <ul>
+            <li><a href="#reconnaissance">Reconnaissance</a></li>
+            <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <h2 id="memecat-battlestation">Memecat Battlestation</h2>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestation.png" alt="">
+<a href="/CTFWriteUps/flareon2019/files/1-MemecatBattlestation.7z">1-MemecatBattlestation.7z</a><br>
+password = <code>flare</code></p>
+<p>Welcome to the Sixth Flare-On Challenge!</p>
+<p>This is a simple game. Reverse engineer it to figure out what &ldquo;weapon codes&rdquo; you need to enter to defeat each of the two enemies and the victory screen will reveal the flag. Enter the flag here on this site to score and move on to the next level.</p>
+<p>* This challenge is written in .NET. If you don't already have a favorite .NET reverse engineering tool I recommend dnSpy</p>
+<p>** If you already solved the full version of this game at our booth at BlackHat  or the subsequent release on twitter, congratulations, enter the flag from the victory screen now to bypass this level.</p>
+<h3 id="reconnaissance">Reconnaissance</h3>
+<p>We're working with a .NET app, I don't have any tools for .NET, so I'll take their advice.</p>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestationdnspy.png" alt="">
+I'm greeted with a clean UI and an easy to nagivate menu that show various classes and methods. With a bit of exploring
+i find <code>main()</code>. Here i can see how the program runs&hellip;</p>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#815ba4">private</span> <span style="color:#815ba4">static</span> <span style="color:#815ba4">void</span> Main()
+		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(<span style="color:#815ba4">false</span>);
+			Application.Run(<span style="color:#815ba4">new</span> LogoForm());
+			Stage1Form stage1Form = <span style="color:#815ba4">new</span> Stage1Form();
+			Application.Run(stage1Form);
+			<span style="color:#815ba4">if</span> (stage1Form.WeaponCode == <span style="color:#815ba4">null</span>)
+			{
+				<span style="color:#815ba4">return</span>;
+			}
+			Stage2Form stage2Form = <span style="color:#815ba4">new</span> Stage2Form();
+			stage2Form.Location = stage1Form.Location;
+			Application.Run(stage2Form);
+			<span style="color:#815ba4">if</span> (stage2Form.WeaponCode == <span style="color:#815ba4">null</span>)
+			{
+				<span style="color:#815ba4">return</span>;
+			}
+			Application.Run(<span style="color:#815ba4">new</span> VictoryForm
+			{
+				Arsenal = <span style="color:#fec418">string</span>.Join(<span style="color:#48b685">&#34;,&#34;</span>, <span style="color:#815ba4">new</span> <span style="color:#fec418">string</span>[]
+				{
+					stage2Form.WeaponCode,
+					stage1Form.WeaponCode
+				}),
+				Location = stage2Form.Location
+			});
+		}
+</code></pre></div><p><code>main</code> initializes 3 objects, <code>stage1Form</code>, <code>stage2Form</code> and <code>VictoryForm</code>. On <code>VictoryForm</code>'s initialization, a string is created by joining two <code>weaponCode</code>, each code being a member of <code>stage1Form</code> and <code>stage2Form</code>. The challenge is to find the weapon codes, so the next step is to further investigate these classes.</p>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestationstage1form.png" alt=""><br>
+dnspy is a very powerful tool, by right clicking on the variable we can find out what reads and writes to it&hellip;</p>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestationanalyzer1.png" alt="">
+<code>FireButton_Click</code> is what writes to it, let's follow it&hellip;</p>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#">			<span style="color:#815ba4">if</span> (<span style="color:#815ba4">this</span>.codeTextBox.Text == <span style="color:#48b685">&#34;RAINBOW&#34;</span>)
+			{
+				<span style="color:#815ba4">this</span>.fireButton.Visible = <span style="color:#815ba4">false</span>;
+				<span style="color:#815ba4">this</span>.codeTextBox.Visible = <span style="color:#815ba4">false</span>;
+				<span style="color:#815ba4">this</span>.armingCodeLabel.Visible = <span style="color:#815ba4">false</span>;
+				<span style="color:#815ba4">this</span>.invalidWeaponLabel.Visible = <span style="color:#815ba4">false</span>;
+				<span style="color:#815ba4">this</span>.WeaponCode = <span style="color:#815ba4">this</span>.codeTextBox.Text;
+				<span style="color:#815ba4">this</span>.victoryAnimationTimer.Start();
+				<span style="color:#815ba4">return</span>;
+			}
+</code></pre></div><p>And there's the first weapon code <code>RAINBOW</code>!</p>
+<p>Now repeat the same steps for <code>stage2Form</code>&hellip;</p>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestationanalyzer2.png" alt=""></p>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#">	<span style="color:#815ba4">if</span> (<span style="color:#815ba4">this</span>.isValidWeaponCode(<span style="color:#815ba4">this</span>.codeTextBox.Text))
+	{
+		<span style="color:#815ba4">this</span>.fireButton.Visible = <span style="color:#815ba4">false</span>;
+		<span style="color:#815ba4">this</span>.codeTextBox.Visible = <span style="color:#815ba4">false</span>;
+		<span style="color:#815ba4">this</span>.armingCodeLabel.Visible = <span style="color:#815ba4">false</span>;
+		<span style="color:#815ba4">this</span>.invalidWeaponLabel.Visible = <span style="color:#815ba4">false</span>;
+		<span style="color:#815ba4">this</span>.WeaponCode = <span style="color:#815ba4">this</span>.codeTextBox.Text;
+		<span style="color:#815ba4">this</span>.victoryAnimationTimer.Start();
+		<span style="color:#815ba4">return</span>;
+	}
+</code></pre></div><p>Instead of being directly compared, a new function <code>isValidWeaponCode</code> is called to check the code. Let's navigating to the
+function&hellip;</p>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#815ba4">private</span> <span style="color:#fec418">bool</span> isValidWeaponCode(<span style="color:#fec418">string</span> s)
+{
+	<span style="color:#fec418">char</span>[] array = s.ToCharArray();
+	<span style="color:#fec418">int</span> length = s.Length;
+	<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> i = <span style="color:#f99b15">0</span>; i &lt; length; i++)
+	{
+		<span style="color:#fec418">char</span>[] array2 = array;
+		<span style="color:#fec418">int</span> num = i;
+		array2[num] ^= <span style="color:#48b685">&#39;A&#39;</span>;
+	}
+	<span style="color:#815ba4">return</span> array.SequenceEqual(<span style="color:#815ba4">new</span> <span style="color:#fec418">char</span>[]
+	{
+		<span style="color:#ef6155">&#39;</span><span style="color:#ef6155">\</span>u0003<span style="color:#ef6155">&#39;</span>,
+		<span style="color:#48b685">&#39; &#39;</span>,
+		<span style="color:#48b685">&#39;&amp;&#39;</span>,
+		<span style="color:#48b685">&#39;$&#39;</span>,
+		<span style="color:#48b685">&#39;-&#39;</span>,
+		<span style="color:#ef6155">&#39;</span><span style="color:#ef6155">\</span>u001e<span style="color:#ef6155">&#39;</span>,
+		<span style="color:#ef6155">&#39;</span><span style="color:#ef6155">\</span>u0002<span style="color:#ef6155">&#39;</span>,
+		<span style="color:#48b685">&#39; &#39;</span>,
+		<span style="color:#48b685">&#39;/&#39;</span>,
+		<span style="color:#48b685">&#39;/&#39;</span>,
+		<span style="color:#48b685">&#39;.&#39;</span>,
+		<span style="color:#48b685">&#39;/&#39;</span>
+	});
+}
+</code></pre></div><p><code>isValidWeaponCode</code> parses a string into an array of Chars, then xors each char with <code>A</code>. The resulting array is compared to&hellip;</p>
+<div class="highlight"><pre style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">		&#39;\u0003&#39;,
+		&#39; &#39;,
+		&#39;&amp;&#39;,
+		&#39;$&#39;,
+		&#39;-&#39;,
+		&#39;\u001e&#39;,
+		&#39;\u0002&#39;,
+		&#39; &#39;,
+		&#39;/&#39;,
+		&#39;/&#39;,
+		&#39;.&#39;,
+		&#39;/&#39;
+</code></pre></div><p>It's an awkward array of characters, containing a few escape commands. With further investigation on google, those escape commands are apart of the unicode character table. Knowing this we can just xor each char, as xor is it's own reverse operation, to obtain the value the function wants.</p>
+<p>Using a CyberChef <a href="https://gchq.github.io/CyberChef/#recipe=Unescape_Unicode_Characters('%5C%5Cu')Fork('%5C%5Cn','',false)XOR(%7B'option':'UTF8','string':'A'%7D,'Standard',false)&amp;input=XHUwMDAzCiAKJgokCi0KXHUwMDFlClx1MDAwMgogCi8KLwouCi8">recipe</a> to decode the string. The weapon code becomes <code>Bagel_Cannon</code>.
+Now with both weapon codes, <code>RAINBOW</code> and <code>Bagel_Cannon</code>, we are fully armed to take on the cat invasion.</p>
+<p><img src="/CTFWriteUps/flareon2019/images/memecatbattlestationflag.png" alt=""></p>
+<h3 id="solution">Solution</h3>
+<p>This challenge has a heavy reliance on using the right tools for the right job. Take the message's advice and use dnspy. Explore the menus and click around, see what it has to offer, it's a pretty powerful tool. The to solution the problem is pretty straight forward, the 2 codes are hard coded into the checks. The first code was written in plain text and the second code was encoded with xor and a key which happened to be <code>A</code>. The xor encoding was a bit tricky to deal with because i wasn't sure on how to handle the unicode escape codes, but fortunately the right tool for the right job was <a href="https://gchq.github.io/CyberChef/">CyberChef</a> which handled it like a champ.</p>
+<p>flag = <code>Kitteh_save_galixy@flare-on.com</code></p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fpootytangfl.github.io%2fCTFWriteUps%2fposts%2fflareon2019%2f - Flare%20On%202019 "><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/pootytangfl">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/acampuzanofl/">
+        <i class="fa fa-linkedin-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> Andres Campuzano
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://pootytangfl.github.io/CTFWriteUps/js/jquery-3.3.1.min.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/main.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>
