@@ -6,6 +6,7 @@ tags = [
 	"Binary Exploitation"
 ]
 date = "2020-02-20"
+images = ["/CTFWriteUps/flareon2019/images/memecatbattlestationdnspy.png"]
 +++
 
 ## Memecat Battlestation
@@ -149,3 +150,12 @@ Now with both weapon codes, `RAINBOW` and `Bagel_Cannon`, we are fully armed to 
 This challenge has a heavy reliance on using the right tools for the right job. Take the message's advice and use dnspy. Explore the menus and click around, see what it has to offer, it's a pretty powerful tool. The to solution the problem is pretty straight forward, the 2 codes are hard coded into the checks. The first code was written in plain text and the second code was encoded with xor and a key which happened to be `A`. The xor encoding was a bit tricky to deal with because i wasn't sure on how to handle the unicode escape codes, but fortunately the right tool for the right job was [CyberChef](https://gchq.github.io/CyberChef/) which handled it like a champ.
 
 flag = `Kitteh_save_galixy@flare-on.com`
+
+## Overlong
+![](/CTFWriteUps/flareon2019/images/overlong.png)  
+The secret of this next challenge is cleverly hidden. However, with the right approach, finding the solution will not take an *overlong* amount of time.
+
+### Reconnaissance
+
+### Solution
+flag = `I_a_M_t_h_e_e_n_C_o_D_i_n_g@flare-on.com`
