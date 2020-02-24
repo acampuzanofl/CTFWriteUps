@@ -46,7 +46,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 20, 2020 00:00
-                    · 673 words
+                    · 704 words
                     · 4 minute read
                       <span class="tags">
                       
@@ -72,6 +72,12 @@
           <ul>
             <li><a href="#reconnaissance">Reconnaissance</a></li>
             <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#overlong">Overlong</a>
+          <ul>
+            <li><a href="#reconnaissance-1">Reconnaissance</a></li>
+            <li><a href="#solution-1">Solution</a></li>
           </ul>
         </li>
       </ul>
@@ -199,6 +205,12 @@ Now with both weapon codes, <code>RAINBOW</code> and <code>Bagel_Cannon</code>, 
 <h3 id="solution">Solution</h3>
 <p>This challenge has a heavy reliance on using the right tools for the right job. Take the message's advice and use dnspy. Explore the menus and click around, see what it has to offer, it's a pretty powerful tool. The to solution the problem is pretty straight forward, the 2 codes are hard coded into the checks. The first code was written in plain text and the second code was encoded with xor and a key which happened to be <code>A</code>. The xor encoding was a bit tricky to deal with because i wasn't sure on how to handle the unicode escape codes, but fortunately the right tool for the right job was <a href="https://gchq.github.io/CyberChef/">CyberChef</a> which handled it like a champ.</p>
 <p>flag = <code>Kitteh_save_galixy@flare-on.com</code></p>
+<h2 id="overlong">Overlong</h2>
+<p><img src="/CTFWriteUps/flareon2019/images/overlong.png" alt=""><br>
+The secret of this next challenge is cleverly hidden. However, with the right approach, finding the solution will not take an <em>overlong</em> amount of time.</p>
+<h3 id="reconnaissance-1">Reconnaissance</h3>
+<h3 id="solution-1">Solution</h3>
+<p>flag = <code>I_a_M_t_h_e_e_n_C_o_D_i_n_g@flare-on.com</code></p>
 
                 </section>
             </article>
