@@ -6,7 +6,7 @@ tags = [
 	"Binary Exploitation"
 ]
 date = "2020-02-20"
-images = ["/CTFWriteUps/flareon2019/images/memecatbattlestationdnspy.png"]
+images = ["https://pootytangfl.github.io/CTFWriteUps/flareon2019/images/overlong.png"]
 +++
 
 ## Memecat Battlestation
