@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://pootytangfl.github.io/CTFWriteUps/canyouhackit/images/canyouhackit.png"/>
+
+<meta name="twitter:title" content="Can You Hack It"/>
+<meta name="twitter:description" content="https://hack.ainfosec.com/"/>
+
+		<meta property="og:title" content="Can You Hack It" />
+<meta property="og:description" content="https://hack.ainfosec.com/" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pootytangfl.github.io/CTFWriteUps/posts/canyouhackit/" />
+<meta property="og:image" content="https://pootytangfl.github.io/CTFWriteUps/canyouhackit/images/canyouhackit.png" />
+<meta property="article:published_time" content="2020-03-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-03-12T00:00:00+00:00" />
+
+		<meta name="author" content="Andres Campuzano">
+		<meta name="description" content="Documenting CTFs attempted">
+		<meta name="generator" content="Hugo 0.62.2" />
+		<title>Can You Hack It &middot; Write-Ups</title>
+		<link rel="shortcut icon" href="https://pootytangfl.github.io/CTFWriteUps/images/favicon.ico">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/style.css">
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/atom-one-dark.css">
+
+		
+		<link rel="stylesheet" href="https://pootytangfl.github.io/CTFWriteUps/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://pootytangfl.github.io/CTFWriteUps/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://pootytangfl.github.io/CTFWriteUps/posts'>Archive</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/tags'>Tags</a>
+	<a href='https://pootytangfl.github.io/CTFWriteUps/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Can You Hack It
+                    </h1>
+                    <h2 class="headline">
+                    Mar 12, 2020 00:00
+                    · 2714 words
+                    · 13 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://pootytangfl.github.io/CTFWriteUps/tags/re">RE</a>
+                          
+                              <a href="https://pootytangfl.github.io/CTFWriteUps/tags/binary-exploitation">Binary Exploitation</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#reverse-engineering">Reverse Engineering</a>
+      <ul>
+        <li><a href="#sentence-bot">Sentence Bot</a>
+          <ul>
+            <li><a href="#reconnaissance">Reconnaissance</a></li>
+            <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#license-key-easy">License Key Easy</a>
+          <ul>
+            <li><a href="#reconnaissance-1">Reconnaissance</a></li>
+            <li><a href="#solution-1">Solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#license-key-hard">License Key Hard</a>
+          <ul>
+            <li><a href="#reconnaissance-2">Reconnaissance</a></li>
+          </ul>
+        </li>
+        <li><a href="#solution-2">Solution</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <h1 id="reverse-engineering">Reverse Engineering</h1>
+<h2 id="sentence-bot">Sentence Bot</h2>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebot.png" alt=""><br>
+<a href="/CTFWriteUps/canyouhackit/files/sentencebot">sentencebot</a></p>
+<h3 id="reconnaissance">Reconnaissance</h3>
+<p>sentencebot has no discernible file type or usage instructions. Let's load the file into IDA and get an overview.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotelf.png" alt=""><br>
+right from the start i see it's an elf file, which means I'll be running the file on a Linux environment. Let's go ahead and do that.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotrun.png" alt=""><br>
+Seems to just put a bunch of strings together. Let's continue with IDA.</p>
+<p><a href="/CTFWriteUps/canyouhackit/images/sentencebotida.png"><img src="/CTFWriteUps/canyouhackit/images/sentencebotida.png" alt=""></a>
+I highlighted some interesting function names, <code>getFlag</code> seems to be the function to look out for. At the start of main i notice something important&hellip;</p>
+<pre><code>mov     [rbp+var_14], edi
+mov     [rbp+var_20], rsi
+mov     edi, 0
+call    time
+mov     cs:SEED, eax
+cmp     [rbp+var_14], 1
+</code></pre><p>There's a lot going on here so lets break it down&hellip;</p>
+<pre><code>mov 	edi, 0
+call 	time
+mov		cs:SEED, eax
+</code></pre><p><a href="http://www.cplusplus.com/reference/ctime/time/">time</a> is a very recognizable function. A null pointer is passed as an argument and the current unix time is returned in <code>eax</code> and passed to <code>SEED</code>.</p>
+<pre><code>mov     [rbp+var_14], edi
+mov     [rbp+var_20], rsi
+.
+.
+.
+cmp 	[rbp+var_14], 1
+jle     loc_40105C
+</code></pre><p>Here it looks like the program receives command line arguments and stores them into variables. In this case arguments are being passed left to right, the arguments recognized by IDA, <code>main(int argc, const char **argv, const char **envp)</code>, <code>argc</code> must be <code>var_14</code> and <code>argv</code> is <code>var_20</code>. <a href="https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=vs-2019">argc</a> stores a count of the number of arguments that are passed and <a href="https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=vs-2019">argv</a> stores a string. So we can rename the variables in ida to&hellip;</p>
+<pre><code>mov     [rbp+argc], edi
+mov     [rbp+strings], rsi
+.
+.
+.
+cmp 	[rbp+argc], 1
+jle     loc_40105C
+</code></pre><p>Here it becomes little more evident on what's happening, the program is checking the number of arguments and then jumping if the number is less than or equal to 1. Let's explore the 2 different cases&hellip;</p>
+<h4 id="case-1-argc--1">Case 1: argc = 1</h4>
+<p>This is the default path as no usage instructions are listed, we already know from running the program that it just outputs a bunch of text.</p>
+<h4 id="case-2-argc--2">Case 2: argc = 2</h4>
+<p>the program jumps to</p>
+<pre><code>mov     rax, [rbp+string]
+add     rax, 8
+mov     rax, [rax]
+lea     rsi, aSetSeed   ; &quot;--set-seed&quot;
+mov     rdi, rax
+call    j_strcmp_ifunc
+test    eax, eax
+jnz     short loc_400F7E
+</code></pre><p>it's testing to see if the string that was passed as an argument is equal to <code>--set-seed</code>. <a href="http://www.cplusplus.com/reference/cstring/strcmp/">strcmp</a> returns 0 if the strings match. When the strings match then&hellip;</p>
+<pre><code>cmp     [rbp+argc], 2
+jle     short loc_400F7E
+
+loc_400F7E:
+mov     rax, [rbp+string]
+add     rax, 8
+mov     rax, [rax]
+lea     rsi, aDebug     ; &quot;--debug&quot;
+mov     rdi, rax
+call    j_strcmp_ifunc
+test    eax, eax
+jnz     loc_40105C
+</code></pre><p>another check on <code>argc</code>, this time checking if it's less than or equal to 2. In this case, it is and jumps to another <a href="http://www.cplusplus.com/reference/cstring/strcmp/">strcmp</a> that looks for <code>--debug</code>.</p>
+<p>I've obtained quite a bit of usage information by evaluating some of these possible options. I understand now that certain strings, <code>--set-seed</code> and <code>--debug</code>, can be passed to the program to change the execution path. Let's go pass these new arguments and see how the program behaves.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotseed.png" alt=""><br>
+Starting with <code>--set-seed</code> command, passing it by itself seems to run the default output. But then considering the context &ldquo;set seed&rdquo; i figured it probably also wanted 1 other argument which would be a seed value. Sure enough it works as expected.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotdebug.png" alt=""><br>
+This one gave much different output. It's outputting a mac address with a bunch of 00s and a seed value. That seed value looks pretty suspicious&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotvalue.png" alt=""><br>
+yup that definitely looks like something. The program seems to be searching for a mac address somewhere and then uses it as key to decrypt the flag. I need to find out what mac address the program wants in order to generate the proper flag.</p>
+<p>From the function menu, <code>getFlag</code>, <code>xorencrypt</code> and <code>getMac</code> are still left to be examined. By the names alone i can extrapolate the roles they play. <code>xorencrypt</code> is the encryption for the flag, <code>getMac</code> is what finds the mac address and <code>getFlag</code> &hellip; gets the flag. <code>getFlag</code> will be the first function that i will inspect as it seems the most relevant for the challenge.</p>
+<p><code>getFlag</code> starts&hellip;</p>
+<pre><code>push    rbp
+mov     rbp, rsp
+sub     rsp, 10h
+mov     eax, 0
+call    getMac
+mov     [rbp+var_10], rax
+cmp     [rbp+var_10], 0
+jnz     short loc_400BB4
+</code></pre><p><code>getMac</code> is called early in the function, then returns a value and stores it into <code>var_10</code> which can be assumed to be <code>macAddress</code>. Then the address is checked if its 0 and continues on if it's not&hellip;</p>
+<pre><code>mov     rax, [rbp+macAddr]
+lea     rsi, aDeAdBeEfFaCe ; &quot;de:ad:be:ef:fa:ce&quot;
+mov     rdi, rax
+call    j_strcmp_ifunc
+test    eax, eax
+</code></pre><p>here it calls <a href="http://www.cplusplus.com/reference/cstring/strcmp/">strcmp</a> to test the mac address found with <code>de:ad:be:ef:fa:ce</code>, which i can only assume must be the key.</p>
+<p>Changing the mac address should be simple enough, but there was a problem. After changing the mac address and running sentencebot&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotmac.png" alt=""><br>
+the mac address is not being updated correctly? How exactly is <code>getMac</code> finding the address? Let's find out!</p>
+<pre><code>push    rbp
+mov     rbp, rsp
+push    rbx
+sub     rsp, 48h
+mov     [rbp+var_40], 0
+mov     [rbp+var_38], 0
+mov     rax, cs:dir_search
+mov     rdi, rax
+call    opendir
+mov     [rbp+var_30], rax
+cmp     [rbp+var_30], 0
+jnz     short loc_4011C4
+</code></pre><p><code>getMac</code> starts by making a call to <a href="http://man7.org/linux/man-pages/man3/opendir.3.html">opendir</a> with <code>dir_search</code> passed to it. <code>dir_search</code> contains the string <code>&quot;/sys/class/net&quot;</code>. This directory is part of a pseudo-filesystem where Linux provides kernel information. net folder specifically contains information on network devices.</p>
+<p>Further ahead in the function&hellip;</p>
+<pre><code>mov     [rbp+var_28], rax
+mov     rdi, cs:file
+mov     rdx, cs:dir_search
+mov     eax, [rbp+var_44]
+</code></pre><p><code>file</code> contains the value <code>address</code>, this must be the place <code>getMac</code> is searching for to obtain the address. Time to manualy check the directory and investigate a bit more&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotdirectory.png" alt="">
+Here is something interesting that is happening, both <code>lo</code> and <code>wlp1s0</code> contain an <code>address</code> file. Checking both files <code>lo</code> contains <code>00:00:00:00:00:00</code> and <code>wlp1s0</code> contains <code>de:ad:be:ef:fa:ce</code>. What appears to be happening is that <code>getMac</code> searches for the first instance of <code>address</code> and takes the mac from there. Since <code>lo</code> is first alphabetically that's where <code>getMac</code> is getting the address from.</p>
+<p>Let's go ahead and give <code>lo</code> a mac address then&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotlo.png" alt=""><br>
+and now&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/sentencebotflag.png" alt=""></p>
+<h3 id="solution">Solution</h3>
+<p>Used ida to figure out that the program receives command line arguments, specifically <code>--debug</code> and <code>--set-seed</code>. Then ran the commands to see how the program behaves. In the <code>--debug</code> option the program outputs the seed <code>19016</code> value as well as outputs the mac address. When the seed value, given by <code>--debug</code>, is set using <code>--set-seed</code> the program runs <code>getFlag</code>. Through analyzing the <code>getFlag</code> function it became obvious that <code>getFlag</code> was using the mac address <code>de:ad:be:ef:fa:ce</code> to decrypt the flag. Once the mac address was correctly set and <code>getFlag</code> was called again the flag was released.<br>
+flag = <code>flag{l0L-k6969%^}</code></p>
+<h2 id="license-key-easy">License Key Easy</h2>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyeasy.png" alt=""><br>
+<a href="/CTFWriteUps/canyouhackit/files/license_key_easy">license_key_easy</a></p>
+<h3 id="reconnaissance-1">Reconnaissance</h3>
+<p>Let's start off by running the file&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyeasyrun.png" alt=""><br>
+It asks for a key, performs a check and then outputs that the key was invalid.</p>
+<pre><code>push    rbp
+mov     rbp, rsp
+sub     rsp, 430h
+mov     rax, fs:28h
+mov     [rbp+var_8], rax
+xor     eax, eax
+lea     rdi, aLicenseKey ; &quot;License key: &quot;
+mov     eax, 0
+call    printf
+lea     rax, [rbp+var_20]
+mov     rsi, rax
+lea     rdi, a16s       ; &quot;%16s&quot;
+mov     eax, 0
+call    __isoc99_scanf
+lea     rax, [rbp+var_20]
+mov     rsi, rax
+lea     rdi, aCheckingKeyS ; &quot;Checking key: %s\n&quot;
+mov     eax, 0
+call    printf
+lea     rax, [rbp+var_20]
+mov     rdi, rax
+call    j_strlen_ifunc
+mov     [rbp+var_42C], eax
+cmp     [rbp+var_42C], 0Fh
+jg      short loc_400CE2
+</code></pre><p>here is the start of the <code>main</code> function. I notice that <code>var_20</code> and <code>%16s</code> are being passed to <a href="http://www.cplusplus.com/reference/cstdio/scanf/">scanf</a>. Where <code>var_20</code> = <code>strings</code>, as this is where <code>scanf</code> will store the input and <code>%16s</code> defines the format, which would be a 16 character string.</p>
+<pre><code>lea     rax, [rbp+string]
+mov     rdi, rax
+call    j_strlen_ifunc
+mov     [rbp+var_42C], eax
+cmp     [rbp+var_42C], 0Fh
+</code></pre><p>A little further down, the length of the string is found using <a href="http://www.cplusplus.com/reference/cstring/strlen/">strlen</a>, stored in <code>var_42c</code> and compared to <code>0x0f</code> or <code>15</code>. The function then jumps when the length is greater then <code>15</code>.</p>
+<p>Upon meeting the length requirement the function jumps to&hellip;</p>
+<pre><code>lea     rax, [rbp+var_420]
+mov     esi, 0C67D853Bh
+mov     rdi, rax
+call    generate_table
+lea     rdx, [rbp+string]
+lea     rax, [rbp+var_420]
+mov     ecx, 10h
+mov     esi, 0
+mov     rdi, rax
+call    update
+mov     [rbp+var_428], eax
+cmp     [rbp+var_428], 984D83E0h
+</code></pre><p>this section seems to generate a pseudo-random table using a seed <code>0x0c67d853b</code>, the output of <code>generate_table</code> is stored into <code>var_420</code>. Then the table and the input string are both passed into <code>update</code> where a key is generated. The key stored in <code>var_428</code> is then compared with <code>0x984d83e0</code> which seems to be the valid key.</p>
+<p>passing the check leads us to&hellip;</p>
+<pre><code>lea     rax, [rbp+table]
+mov     esi, 0DEADBEEFh
+mov     rdi, rax
+call    generate_table
+lea     rax, [rbp+table]
+mov     ecx, 24h
+lea     rdx, aAisBasicKeygen ; &quot;AIS Basic Keygen Flag (No Cheating!)&quot;
+mov     esi, 0
+mov     rdi, rax
+call    update
+mov     [rbp+var_424], eax
+lea     rdi, aCongratulation ; &quot;Congratulations, you got a flag!&quot;
+call    puts
+</code></pre><p>Based on the referenced text strings this clearly outputs the flag. I can see that the flag is generated in the same manner as the key. With one huge exception, i understand from the previous call to <code>update</code> a table and a user input was submitted to generate a key. In this case, it seems like the flag is generated without the user input. That's a major flaw that can be exploited as the flag is technically hard coded into the function. There is only a pseudo-random table that is based on a static seed to obfuscate it. So all i need to do is direct the program to this location and let the function generate the flag for me, completely ignoring what ever input i supplied.</p>
+<p>using ida's assembler feature&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyeasyjmp.png" alt=""><br>
+i modified the first <code>jg short loc_400CE2</code> so that it will always jump to <code>400D38</code> which is the start of the flag generation algorithm. Then just patch the file and run it&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyeasyflag.png" alt=""></p>
+<h3 id="solution-1">Solution</h3>
+<p>The program generates a key based on the user's input and a value from a table generated by a static seed. This key is then compared to the value <code>0x984d83e0</code>, which is the valid license key hard coded into the program. That alone being a major vulnerability, the flag was stored in a similar manner, albeit a little bit more obfuscated. The flag is also generated from a table with a static seed. But one special case is that it does not use any other variables to generate the flag. So if you know the seed value for the table, you know the value of the flag. Or even better let the program do the work for us and patch the program to output the flag.<br>
+flag = <code>b62fb01e</code></p>
+<h2 id="license-key-hard">License Key Hard</h2>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyhard.png" alt=""><br>
+<a href="/CTFWriteUps/canyouhackit/files/license_key_hard">license_key_hard</a></p>
+<h3 id="reconnaissance-2">Reconnaissance</h3>
+<p>Similar to the previous challenge, let's go ahead and run the file and see what it does.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyhardrun.png" alt="">
+oooohh, it seems like a random seed is generated if you run the program without any command line arguments and with command line arguments the program checks the input. Looks like the vulnerability of the previous challenge was addressed. Looking at ida&hellip;</p>
+<pre><code>push    rbp
+mov     rbp, rsp
+sub     rsp, 450h
+mov     [rbp+var_444], edi
+mov     [rbp+var_450], rsi
+mov     rax, fs:28h
+mov     [rbp+var_8], rax
+xor     eax, eax
+mov     edi, 0
+call    time
+mov     [rbp+var_418], rax
+mov     rax, [rbp+var_418]
+mov     esi, eax
+mov     rcx, [rbp+var_418]
+mov     rdx, 8888888888888889h
+mov     rax, rcx
+imul    rdx
+lea     rax, [rdx+rcx]
+sar     rax, 4
+mov     rdx, rax
+mov     rax, rcx
+sar     rax, 3Fh
+sub     rdx, rax
+mov     rax, rdx
+shl     rax, 4
+sub     rax, rdx
+add     rax, rax
+sub     rcx, rax
+mov     rdx, rcx
+mov     eax, edx
+sub     esi, eax
+mov     eax, esi
+mov     [rbp+var_430], eax
+mov     [rbp+var_434], 80000000h
+lea     rax, [rbp+var_410]
+mov     esi, 0EDB88320h
+mov     rdi, rax
+call    generate_table
+mov     edx, [rbp+var_430]
+lea     rax, [rbp+var_410]
+mov     esi, 0
+mov     rdi, rax
+call    update_uint32
+mov     [rbp+var_42C], eax
+cmp     [rbp+var_444], 1
+jnz     short loc_400DC0
+</code></pre><p>From running the program i already figured out that there were some command line arguments. Much like in previous cases, arguments are passed from left to right. So that <code>var_444</code> = <code>argc</code> and <code>var_450</code> = <code>string</code>. Continuing down <code>main</code>, <a href="http://www.cplusplus.com/reference/ctime/time/">time</a> is called. This must be how the seed is generated. <code>time</code> is stored in <code>var_418</code>.</p>
+<pre><code>mov     [rbp+var_430], eax
+mov     [rbp+var_434], 80000000h
+lea     rax, [rbp+var_410]
+mov     esi, 0EDB88320h
+mov     rdi, rax
+call    generate_table
+mov     edx, [rbp+var_430]
+lea     rax, [rbp+var_410]
+mov     esi, 0
+mov     rdi, rax
+call    update_uint32
+mov     [rbp+var_42C], eax
+cmp     [rbp+argc], 1
+jnz     short loc_400DC0
+</code></pre><p>Here's a couple of functions i recognize, <code>generate_table</code> and <code>update_uint32</code>. These must behave similar to the license_key_easy versions as they are used in a similar manner. <code>generate_table</code> receives a location to store the table <code>var_410</code> and a static seed <code>0x0edb88320</code>. Then <code>update_uint32</code> is called, which receives the table and <code>var_430</code>. I know from previous challenge that <code>var_30</code> was supposed to be the user's input. But this time, <code>var_430</code> appears to be a value of <code>time</code> after undergoing a bit of math (<code>mtime</code>). <code>update_uint32</code> stores the that number (<code>challenge</code>) into <code>var_42c</code>. A cmp is made to test if any command line arguments are present. If there are, we jump&hellip;</p>
+<pre><code>loc_400DC0:
+mov     rax, [rbp+string]
+add     rax, 8
+mov     rax, [rax]
+mov     rdi, rax
+call    j_strlen_ifunc
+cmp     rax, 8
+jz      short loc_400DF2
+</code></pre><p>Using <a href="http://www.cplusplus.com/reference/cstring/strlen/">strlen</a>, the length of the input is obtained and then compared to 8. So the key has to be 8 characters long.</p>
+<pre><code>mov     rax, [rbp+string]
+add     rax, 8
+mov     rax, [rax]
+lea     rcx, [rbp+var_420]
+mov     edx, 10h
+mov     rsi, rcx
+mov     rdi, rax
+call    strtoq
+mov     [rbp+var_428], eax
+mov     rax, [rbp+var_420]
+movzx   eax, byte ptr [rax]
+test    al, al
+jz      short loc_400E41
+</code></pre><p>Here it looks like the <code>string</code> is converted into a <code>quad</code> and stored into <code>var_428</code> using <a href="https://www.codecogs.com/library/computing/c/stdlib.h/strtol.php?alias=strtoq">strtoq</a>. The function jumps if no invalid characters were present.</p>
+<p><a href="/CTFWriteUps/canyouhackit/images/licensekeyhardgraph.png"><img src="/CTFWriteUps/canyouhackit/images/licensekeyhardgraph.png" alt=""></a>
+Here we have the final piece of logic before jumping to the algorithm that gives the flag. It gets the <code>challenge</code> number and checks the first bit. Depending on whether the bit is 1 or 0, the function will branch to different algoritm to perform some math operations on <code>challenge</code>. The output is stored in <code>var_43c</code> or <code>mchallenge</code>. <code>var_438</code> is initialized to <code>0</code> and a check for <code>0x1f</code> is made, this is a for loop. The loop xors <code>mchallenge</code> with <code>quad</code> and checks for any invalid numbers. Then once the loops exist a cmp is made to test if <code>quad</code> is equal to <code>mchallenge</code>.</p>
+<p>If <code>mchallenge</code> is not equal to <code>quad</code> then we have successfully arrived to the flag&hellip;</p>
+<pre><code>mov     edx, [rbp+challenge]
+lea     rax, [rbp+table]
+mov     esi, 0
+mov     rdi, rax
+call    update_uint32
+mov     [rbp+var_424], eax
+mov     edx, [rbp+mchallenge]
+mov     ecx, [rbp+var_424]
+lea     rax, [rbp+table]
+mov     esi, ecx
+mov     rdi, rax
+call    update_uint32
+mov     [rbp+var_424], eax
+lea     rdi, aCongratulation ; &quot;Congratulations, you got a flag!&quot;
+call    puts
+mov     ecx, [rbp+var_424]
+mov     edx, [rbp+mchallenge]
+mov     eax, [rbp+challenge]
+mov     esi, eax
+lea     rdi, a08x08x08x ; &quot;%08x%08x%08x\n&quot;
+mov     eax, 0
+call    printf
+</code></pre><p><code>update_uint32</code> is called using <code>challenge</code> and <code>table</code>, the value is stored into <code>var_424</code>. Then <code>update_uint32</code> is called again but passes <code>mchallenge</code> along with <code>var_424</code>, which was initialized a moment before. That value is then stored in <code>var_424</code> which looks like its apart of the <code>flag</code>. The flag is constructed by putting 3 variables together, <code>flag</code>, <code>mchallenge</code> and <code>challenge</code>. The construction of the flag is a bit more complex but it still follows the same vulnerabilities as license_key_easy. The flag is generated independent from the users input. Which means i can patch the program and force it to generate the flag.</p>
+<p>Using ida's assembler&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyhardjmp1.png" alt=""><br>
+i modified the first <code>jnz</code>, shortly after <code>challenge</code> was assigned, to always <code>jmp</code>. I chose to jump to <code>0x400e41</code> because that's where <code>mchallenge</code> gets created. I notice a <code>jmp</code> shortly after <code>mchallenge</code> was created and i decided to change it&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyhardjmp2.png" alt=""><br>
+using ida's function naming feature i went ahead and labeled the section of the code where the flag is generated. That made it so i can just reference the function by label to jump to it. All 3 variables, <code>challenge</code>, <code>mchallenge</code> and <code>flag</code>, needed to generate the flag have been initialized.</p>
+<p>Now i patch and run&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/licensekeyhardflag.png" alt=""></p>
+<h2 id="solution-2">Solution</h2>
+<p>The license key algorithm is similar to the previous challenge, license key easy, with the added time based seed value. Unfortunately the function that generated the flag was actually the true vulnerability in this challenge. Turns out the flag is generated using the same seeds that are used to check the key. Since the key and the flag are unrelated we can just brute force the flag by redirecting the function to skip all they key checks.<br>
+flag = <code>838d0c54118256aa3bf03022</code></p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fpootytangfl.github.io%2fCTFWriteUps%2fposts%2fcanyouhackit%2f - Can%20You%20Hack%20It "><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/pootytangfl">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/acampuzanofl/">
+        <i class="fa fa-linkedin-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> Andres Campuzano
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://pootytangfl.github.io/CTFWriteUps/js/jquery-3.3.1.min.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/main.js"></script>
+<script src="https://pootytangfl.github.io/CTFWriteUps/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>
