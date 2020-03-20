@@ -408,3 +408,57 @@ Now i patch and run...
 
 The license key algorithm is similar to the previous challenge, license key easy, with the added time based seed value. Unfortunately the function that generated the flag was actually the true vulnerability in this challenge. Turns out the flag is generated using the same seeds that are used to check the key. Since the key and the flag are unrelated we can just brute force the flag by redirecting the function to skip all they key checks.  
 flag = `838d0c54118256aa3bf03022`
+
+# Binary Exploitation
+## Stack Overflow
+![](/CTFWriteUps/canyouhackit/images/stackoverflow.png)
+
+### Reconnaissance
+The challenge tells me everything i need to know and what to do.
+```
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char** argv) {
+    int authenticated = 0;
+    char password[12] = {'\0'};
+    char checkpass[12] = "********";
+
+    printf("Enter the password: ");
+    gets(password);
+
+    if (!strncmp(password, checkpass, 12)) {
+        authenticated = 1;
+    }
+
+    if (authenticated) {
+        printf("Success!\n");
+        return 0;
+    }
+
+    printf("Invalid password!\n");
+    return 1;
+}
+```
+The challenge name is `stack overflow`, that's a well known exploit where regions in memory (specifically the stack) are overwritten by functions with larger then expected buffers. The challenge is expecting that i overflow the value of `authenticated`.
+
+Since it's up to me to compile and run the program, i can make this easy on myself and use an IDE with a debugger. I will be using codelite...
+
+[![](/CTFWriteUps/canyouhackit/images/stackoverflowcode.png)](/CTFWriteUps/canyouhackit/images/stackoverflowcode.png)
+I went ahead and set a breakpoint at line 11, just after the `gets(password);`. This way i can inspect the value of `authenticated`.
+
+![](/CTFWriteUps/canyouhackit/images/stackoverflowpass.png)  
+I used larger then expected password, expected was `12` and i wrote `24`. Now i can check the value in `authenticated`...
+
+![](/CTFWriteUps/canyouhackit/images/stackoverflowauth.png)
+`authenticated` has the value `1684300800`, which according to the code it was supposed to be `0`. That means it has successfully been overwritten. Continuing to run the program crashes it, a segmentation fault, that means the password was too long and overwrote things it shouldn't have. Let's construct a new password that is just the right length to overwrite `authenticated`. `1684300800` converted to hex is `64646400`, `64` is the character code for `d`. That means `authenticated` was overwritten at around the 13th character. Writing a new password, `aaaabbbbccccd`, and running the debugger ...
+
+![](/CTFWriteUps/canyouhackit/images/stackoverflowauth100.png)
+`authenticated` is now `100` and ...
+
+![](/CTFWriteUps/canyouhackit/images/stackoverflowsuccess.png)
+
+### Solution
+The challenge name is a massive hint. Using a proper IDE with a debugger is sufficient enough to solve this challenge. Understanding how to use the debugger and properly inspecting variables during stepping is basically all the knowledge that is needed to complete. Also knowing what a stack overflow is helps too.  
+password = `aaaabbbbccccd`  
+authenticated = `100`
