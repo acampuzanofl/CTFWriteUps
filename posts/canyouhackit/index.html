@@ -59,8 +59,8 @@
                     </h1>
                     <h2 class="headline">
                     Mar 12, 2020 00:00
-                    · 2714 words
-                    · 13 minute read
+                    · 3050 words
+                    · 15 minute read
                       <span class="tags">
                       
                       
@@ -97,6 +97,16 @@
           <ul>
             <li><a href="#reconnaissance-2">Reconnaissance</a></li>
             <li><a href="#solution-2">Solution</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#binary-exploitation">Binary Exploitation</a>
+      <ul>
+        <li><a href="#stack-overflow">Stack Overflow</a>
+          <ul>
+            <li><a href="#reconnaissance-3">Reconnaissance</a></li>
+            <li><a href="#solution-3">Solution</a></li>
           </ul>
         </li>
       </ul>
@@ -430,6 +440,49 @@ using ida's function naming feature i went ahead and labeled the section of the 
 <h3 id="solution-2">Solution</h3>
 <p>The license key algorithm is similar to the previous challenge, license key easy, with the added time based seed value. Unfortunately the function that generated the flag was actually the true vulnerability in this challenge. Turns out the flag is generated using the same seeds that are used to check the key. Since the key and the flag are unrelated we can just brute force the flag by redirecting the function to skip all they key checks.<br>
 flag = <code>838d0c54118256aa3bf03022</code></p>
+<h1 id="binary-exploitation">Binary Exploitation</h1>
+<h2 id="stack-overflow">Stack Overflow</h2>
+<p><img src="/CTFWriteUps/canyouhackit/images/stackoverflow.png" alt=""></p>
+<h3 id="reconnaissance-3">Reconnaissance</h3>
+<p>The challenge tells me everything i need to know and what to do.</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char** argv) {
+    int authenticated = 0;
+    char password[12] = {'\0'};
+    char checkpass[12] = &quot;********&quot;;
+
+    printf(&quot;Enter the password: &quot;);
+    gets(password);
+
+    if (!strncmp(password, checkpass, 12)) {
+        authenticated = 1;
+    }
+
+    if (authenticated) {
+        printf(&quot;Success!\n&quot;);
+        return 0;
+    }
+
+    printf(&quot;Invalid password!\n&quot;);
+    return 1;
+}
+</code></pre><p>The challenge name is <code>stack overflow</code>, that's a well known exploit where regions in memory (specifically the stack) are overwritten by functions with larger then expected buffers. The challenge is expecting that i overflow the value of <code>authenticated</code>.</p>
+<p>Since it's up to me to compile and run the program, i can make this easy on myself and use an IDE with a debugger. I will be using codelite&hellip;</p>
+<p><a href="/CTFWriteUps/canyouhackit/images/stackoverflowcode.png"><img src="/CTFWriteUps/canyouhackit/images/stackoverflowcode.png" alt=""></a>
+I went ahead and set a breakpoint at line 11, just after the <code>gets(password);</code>. This way i can inspect the value of <code>authenticated</code>.</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/stackoverflowpass.png" alt=""><br>
+I used larger then expected password, expected was <code>12</code> and i wrote <code>24</code>. Now i can check the value in <code>authenticated</code>&hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/stackoverflowauth.png" alt="">
+<code>authenticated</code> has the value <code>1684300800</code>, which according to the code it was supposed to be <code>0</code>. That means it has successfully been overwritten. Continuing to run the program crashes it, a segmentation fault, that means the password was too long and overwrote things it shouldn't have. Let's construct a new password that is just the right length to overwrite <code>authenticated</code>. <code>1684300800</code> converted to hex is <code>64646400</code>, <code>64</code> is the character code for <code>d</code>. That means <code>authenticated</code> was overwritten at around the 13th character. Writing a new password, <code>aaaabbbbccccd</code>, and running the debugger &hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/stackoverflowauth100.png" alt="">
+<code>authenticated</code> is now <code>100</code> and &hellip;</p>
+<p><img src="/CTFWriteUps/canyouhackit/images/stackoverflowsuccess.png" alt=""></p>
+<h3 id="solution-3">Solution</h3>
+<p>The challenge name is a massive hint. Using a proper IDE with a debugger is sufficient enough to solve this challenge. Understanding how to use the debugger and properly inspecting variables during stepping is basically all the knowledge that is needed to complete. Also knowing what a stack overflow is helps too.<br>
+password = <code>aaaabbbbccccd</code><br>
+authenticated = <code>100</code></p>
 
                 </section>
             </article>
