@@ -404,7 +404,7 @@ using ida's function naming feature i went ahead and labeled the section of the 
 Now i patch and run...
 
 ![](/CTFWriteUps/canyouhackit/images/licensekeyhardflag.png)
-## Solution
+### Solution
 
 The license key algorithm is similar to the previous challenge, license key easy, with the added time based seed value. Unfortunately the function that generated the flag was actually the true vulnerability in this challenge. Turns out the flag is generated using the same seeds that are used to check the key. Since the key and the flag are unrelated we can just brute force the flag by redirecting the function to skip all they key checks.  
 flag = `838d0c54118256aa3bf03022`
