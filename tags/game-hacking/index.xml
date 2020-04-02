@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Game Hacking on Write-Ups</title>
+    <link>https://pootytangfl.github.io/CTFWriteUps/tags/game-hacking/</link>
+    <description>Recent content in Game Hacking on Write-Ups</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://pootytangfl.github.io/CTFWriteUps/tags/game-hacking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cyber Security Challenge Germany 2020</title>
+      <link>https://pootytangfl.github.io/CTFWriteUps/posts/cscg2020/</link>
+      <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/cscg2020/</guid>
+      <description>&lt;a href=&#34;https://earth.2020.cscg.de/&#34;&gt;https://earth.2020.cscg.de/&lt;/a&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
