@@ -8,7 +8,7 @@ theme = "CactusPlus"
 	description = "Documenting CTFs attempted"
 	bio = "Reverse engineering the universe one step at a time"
 
-	enableToc = true
+	enableToc = true # enable table of contents
 
 	enableSummary = true
 	# Set the value to true if use description in post front matter replace content summary

@@ -1,11 +1,12 @@
----
-date: 2020-01-18
-title: Hack@UCF
-summary: "https://ctf.hackucf.org/"
-tags: [
++++
+date = "2020-01-18"
+title = "Hack@UCF"
+summary = "https://ctf.hackucf.org/"
+tags = [
 	"RE"
 ]
----
+featured_image = "/CTFWriteUps/Hack@UCF/images/hackatucf.png"
++++
 
 # Reverse Engineering
 ## Baby's First ELF

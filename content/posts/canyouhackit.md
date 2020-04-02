@@ -6,8 +6,10 @@ tags = [
 	"Binary Exploitation"
 ]
 date = "2020-03-12"
-images = ["https://pootytangfl.github.io/CTFWriteUps/canyouhackit/images/canyouhackit.png"]
+images = ["https://pootytangfl.github.io/CTFWriteUps/canyouhackit/images/canyouhackit2.png"]
+featured_image = "/CTFWriteUps/canyouhackit/images/canyouhackit2.png"
 +++
+
 # Reverse Engineering
 ## Sentence Bot
 ![](/CTFWriteUps/canyouhackit/images/sentencebot.png)  

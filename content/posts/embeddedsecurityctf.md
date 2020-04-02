@@ -6,6 +6,7 @@ tags = [
 	"Binary Exploitation"
 ]
 date = "2020-01-22"
+featured_image = "/CTFWriteUps/embeddedsecurity/images/embeddedsecurity.png"
 +++
 
 ## New Orleans
