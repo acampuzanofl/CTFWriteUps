@@ -59,8 +59,8 @@
                     </h1>
                     <h2 class="headline">
                     Apr 1, 2020 00:00
-                    · 5 words
-                    · 1 minute read
+                    · 293 words
+                    · 2 minute read
                       <span class="tags">
                       
                       
@@ -79,10 +79,24 @@
                     <div id="toc">
                       <nav id="TableOfContents">
   <ul>
-    <li><a href="#reverse-engineering">Reverse Engineering</a></li>
+    <li><a href="#reverse-engineering">Reverse Engineering</a>
+      <ul>
+        <li><a href="#intro-to-reversing-1">Intro to Reversing 1</a>
+          <ul>
+            <li><a href="#reconnaissance">Reconnaissance</a></li>
+            <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
     <li><a href="#game-hacking">Game Hacking</a>
       <ul>
-        <li><a href="#rabbit">Rabbit</a></li>
+        <li><a href="#follow-the-white-rabbit---cave">Follow The White Rabbit - Cave</a>
+          <ul>
+            <li><a href="#reconnaissance-1">Reconnaissance</a></li>
+            <li><a href="#solution-1">Solution</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -92,8 +106,44 @@
                 
                 <section id="post-body">
                     <h1 id="reverse-engineering">Reverse Engineering</h1>
+<h2 id="intro-to-reversing-1">Intro to Reversing 1</h2>
+<p><code>Category:</code> Reverse Engineering<br>
+<code>Difficulty:</code> Baby<br>
+<code>Author:</code> 0x4d5a<br>
+<code>First Blood:</code> bre_kit</p>
+<p>This is a introductory challenge for beginners which are eager to learn reverse engineering on linux. The three stages of this challenge will increase in difficulty. But for a gentle introduction, we have you covered: Check out the video of LiveOverflow or follow the authors step by step guide to solve the first part of the challenge.</p>
+<p>Once you solved the challenge locally, grab your real flag at: nc hax1.allesctf.net 9600</p>
+<p><code>Challenge Files:</code> <a href="/CTFWriteUps/cscg2020/files/intro_rev1.zip">intro_rev1.zip</a></p>
+<h3 id="reconnaissance">Reconnaissance</h3>
+<p>This is an entry level challenge, so we can start with some general analysis. Running <code>file</code>&hellip;</p>
+<p><img src="/CTFWriteUps/cscg2020/images/rev1file.png" alt=""><br>
+<code>file</code> command outputs the possible file type, here it tells us that it's an elf file, a common Linux executable. Let's run it!</p>
+<p><img src="/CTFWriteUps/cscg2020/images/rev1run.png" alt=""><br>
+The program asks for a password and gives an error message when an invalid password is given. This is the first challenge so let's use a simple technique, <code>strings</code>&hellip;</p>
+<p><img src="/CTFWriteUps/cscg2020/images/rev1string.png" alt=""> <br>
+<code>strings</code> finds and prints all continuous sequences of at least 4 characters long. <code>strings</code> can be very powerful tool at finding references to important text in a file. In rev1, strings for the password prompt, failed input, error messages and a suspicious looking text that looks like a password <code>y0u_5h3ll_p455</code> were found.</p>
+<p>Let's test this password out&hellip;</p>
+<p><img src="/CTFWriteUps/cscg2020/images/rev1password.png" alt=""><br>
+success! That was indeed the password, now we can get the flag from the server&hellip;</p>
+<p><img src="/CTFWriteUps/cscg2020/images/rev1flag.png" alt=""></p>
+<h3 id="solution">Solution</h3>
+<p>The program was a simple password check with no security. The password was hardcoded into the executable allowing us to parse the text from the file using <code>strings</code> command.<br>
+flag = <code>CSCG{ez_pz_reversing_squ33zy}</code></p>
 <h1 id="game-hacking">Game Hacking</h1>
-<h2 id="rabbit">Rabbit</h2>
+<h2 id="follow-the-white-rabbit---cave">Follow The White Rabbit - Cave</h2>
+<p><code>Category:</code> Gamehax<br>
+<code>Difficulty:</code> Easy<br>
+<code>Author:</code> LiveOverflow<br>
+<code>First Blood:</code> Peace-Maker</p>
+<p>Follow the white rabbit&hellip; into the hole.<br>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/IhLBamqn_5Q" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+</p>
+<p><code>Challenge Files:</code> <a href="/CTFWriteUps/cscg2020/files/FollowWhiteRabbit.zip">FollowWhiteRabbit.zip</a></p>
+<h3 id="reconnaissance-1">Reconnaissance</h3>
+<h3 id="solution-1">Solution</h3>
 
                 </section>
             </article>
