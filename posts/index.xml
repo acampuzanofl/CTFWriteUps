@@ -2,57 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Write-Ups</title>
-    <link>https://pootytangfl.github.io/CTFWriteUps/posts/</link>
+    <link>https://acampuzanofl.github.io/CTFWriteUps/posts/</link>
     <description>Recent content in Posts on Write-Ups</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://pootytangfl.github.io/CTFWriteUps/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://acampuzanofl.github.io/CTFWriteUps/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Cyber Security Challenge Germany 2020</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/cscg2020/</link>
+      <link>https://acampuzanofl.github.io/CTFWriteUps/posts/cscg2020/</link>
       <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/cscg2020/</guid>
+      <guid>https://acampuzanofl.github.io/CTFWriteUps/posts/cscg2020/</guid>
       <description>&lt;a href=&#34;https://earth.2020.cscg.de/&#34;&gt;https://earth.2020.cscg.de/&lt;/a&gt;</description>
     </item>
     
     <item>
       <title>Can You Hack It</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/canyouhackit/</link>
+      <link>https://acampuzanofl.github.io/CTFWriteUps/posts/canyouhackit/</link>
       <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/canyouhackit/</guid>
+      <guid>https://acampuzanofl.github.io/CTFWriteUps/posts/canyouhackit/</guid>
       <description>&lt;a href=&#34;https://hack.ainfosec.com/&#34;&gt;https://hack.ainfosec.com/&lt;/a&gt;</description>
     </item>
     
     <item>
       <title>Flare On 2019</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/flareon2019/</link>
+      <link>https://acampuzanofl.github.io/CTFWriteUps/posts/flareon2019/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/flareon2019/</guid>
+      <guid>https://acampuzanofl.github.io/CTFWriteUps/posts/flareon2019/</guid>
       <description>&lt;a href=&#34;http://flare-on.com/&#34;&gt;http://flare-on.com/&lt;/a&gt;</description>
     </item>
     
     <item>
       <title>Embedded Security CTF</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/embeddedsecurityctf/</link>
+      <link>https://acampuzanofl.github.io/CTFWriteUps/posts/embeddedsecurityctf/</link>
       <pubDate>Wed, 22 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/embeddedsecurityctf/</guid>
+      <guid>https://acampuzanofl.github.io/CTFWriteUps/posts/embeddedsecurityctf/</guid>
       <description>&lt;a href=&#34;https://microcorruption.com/&#34;&gt;https://microcorruption.com/&lt;/a&gt;</description>
     </item>
     
     <item>
       <title>Hack@UCF</title>
-      <link>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</link>
+      <link>https://acampuzanofl.github.io/CTFWriteUps/posts/hackucf-ctf/</link>
       <pubDate>Sat, 18 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://pootytangfl.github.io/CTFWriteUps/posts/hackucf-ctf/</guid>
+      <guid>https://acampuzanofl.github.io/CTFWriteUps/posts/hackucf-ctf/</guid>
       <description>&lt;a href=&#34;https://ctf.hackucf.org/&#34;&gt;https://ctf.hackucf.org/&lt;/a&gt;</description>
     </item>
     
