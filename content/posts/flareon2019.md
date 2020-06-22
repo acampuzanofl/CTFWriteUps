@@ -6,7 +6,7 @@ tags = [
 	"Binary Exploitation"
 ]
 date = "2020-02-20"
-images = ["https://pootytangfl.github.io/CTFWriteUps/flareon2019/images/flareon2019.png"]
+images = ["https://acampuzanofl.github.io/CTFWriteUps/flareon2019/images/flareon2019.png"]
 featured_image = "/CTFWriteUps/flareon2019/images/flareon2019.png"
 +++
 

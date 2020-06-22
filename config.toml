@@ -1,4 +1,4 @@
-baseURL = "https://pootytangfl.github.io/CTFWriteUps/"
+baseURL = "https://acampuzanofl.github.io/CTFWriteUps/"
 languageCode = "en-us"
 title = "Write-Ups"
 theme = "CactusPlus"
@@ -49,7 +49,7 @@ theme = "CactusPlus"
 # Add additional social link entries underneath
 [social]
         linkedin-square = "https://www.linkedin.com/in/acampuzanofl/"
-	github-square = "https://github.com/pootytangfl"
+	github-square = "https://github.com/acampuzanofl"
 
 [markup]
   [markup.tableOfContents]
